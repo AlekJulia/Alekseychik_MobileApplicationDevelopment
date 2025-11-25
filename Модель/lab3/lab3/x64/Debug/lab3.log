@@ -1,0 +1,9 @@
+﻿  lab3.cpp
+C:\Users\Ula\Desktop\Модель\lab3\lab3\lab3.cpp(23,78): warning C4244: аргумент: преобразование "_Rep" в "unsigned int", возможна потеря данных
+C:\Users\Ula\Desktop\Модель\lab3\lab3\lab3.cpp(23,78): warning C4244:         with
+C:\Users\Ula\Desktop\Модель\lab3\lab3\lab3.cpp(23,78): warning C4244:         [
+C:\Users\Ula\Desktop\Модель\lab3\lab3\lab3.cpp(23,78): warning C4244:             _Rep=__int64
+C:\Users\Ula\Desktop\Модель\lab3\lab3\lab3.cpp(23,78): warning C4244:         ]
+  lab3.vcxproj -> C:\Users\Ula\Desktop\Модель\lab3\x64\Debug\lab3.exe
+  "pwsh.exe" не является внутренней или внешней
+  командой, исполняемой программой или пакетным файлом.
