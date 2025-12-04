@@ -1,0 +1,79 @@
+module uart
+	#(
+		parameter moddel = 199, 
+		parameter modrx = 7, 
+		parameter modtx = 9, 
+		parameter shift = 4
+	)
+	(
+		input logic clk, 
+		input logic reset, 
+		input logic UARTrx, 
+		output logic UARTtx,
+		output logic [6:0] hex0,
+		output logic [6:0] hex1,
+		output logic [6:0] hex2,
+		output logic [6:0] hex3
+	);
+	
+	logic newclk;
+	logic txbusy;
+	logic rxbusy;
+	logic txrequest;
+	logic [7:0] delitel;
+	logic [7:0] data;
+
+	wire pllclk;
+	pll_mf obj1 
+	(
+		.refclk(clk), 
+		.rst(reset), 
+		.outclk_0(pllclk)
+	);	
+	
+	always @(posedge pllclk) begin
+		if (delitel < moddel) begin
+			delitel <= delitel + 1;
+			newclk <= 0;
+		end
+		else begin
+			delitel <= 0;
+			newclk <= 1;
+		end
+	end 
+	
+	uartrx
+	#(
+		.modrx(modrx),
+		.shift(shift)
+	)
+	obj2
+	(
+		.clk(newclk),
+		.reset(reset),
+		.txbusy(txbusy),
+		.UARTrx(UARTrx),
+		.rxbusy(rxbusy),
+		.txrequest(txrequest),
+		.data(data),
+		.hex0(hex0),
+		.hex1(hex1),
+		.hex2(hex2),
+		.hex3(hex3)
+	);
+	
+	uarttx
+	#(
+		.modtx(modtx)
+	)
+	obj3
+	(
+		.clk(newclk),
+		.reset(reset),
+		.txrequest(txrequest),
+		.data(data),
+		.txbusy(txbusy),
+		.UARTtx(UARTtx)
+	);
+	
+endmodule

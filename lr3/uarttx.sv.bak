@@ -1,0 +1,53 @@
+module uarttx
+	#(
+		parameter modtx = 10 //кол-во тактов для передачи
+	)
+	(
+		input logic clk,
+		input logic reset,
+		input logic txrequest,
+		input logic [7:0] data,
+		output logic txbusy,
+		output logic UARTtx
+	);
+	
+	logic [3:0] UARTtx_counter; //счетчик передачи бит
+	logic [7:0] copy;
+	
+	always_ff @(posedge clk or posedge reset or posedge txrequest) begin
+		if (reset) begin //сброс
+			txbusy <= 0;
+			UARTtx_counter <= 0;
+			UARTtx <= 1; //стоп-бит
+		end
+		else if (txrequest) begin //запрос передачи
+			copy <= data;
+			txbusy <= 1;
+		end		
+		else if (txbusy) begin
+			if (UARTtx_counter < modtx) begin
+				case (UARTtx_counter)
+					4'b0000 : UARTtx <= 0; //старт-бит
+					4'b0001 : UARTtx <= copy[0];
+					4'b0010 : UARTtx <= copy[1];
+					4'b0011 : UARTtx <= copy[2];
+					4'b0100 : UARTtx <= copy[3];
+					4'b0101 : UARTtx <= copy[4];
+					4'b0110 : UARTtx <= copy[5];
+					4'b0111 : UARTtx <= copy[6];
+					4'b1000 : UARTtx <= copy[7];
+					4'b1001 : UARTtx <= 1; //стоп-бит
+				endcase
+				UARTtx_counter <= UARTtx_counter + 1; //какой счет-чик, такой бит и передаем
+			end
+			else if (UARTtx_counter == modtx) begin //завершение пе-редачи данных
+				txbusy <= 0;
+				UARTtx_counter <= 0;
+				UARTtx <= 1;
+			end
+		end
+		else begin
+			UARTtx <= 1; //поддерживаем стоп-бит, когда не занято устройство
+		end
+	end
+endmodule

@@ -1,0 +1,89 @@
+module uartrx #(
+    parameter modrx = 8, 
+    parameter shift = 4
+)(
+    input logic clk,
+    input logic reset,
+    input logic txbusy,
+    input logic UARTrx,
+    output logic rxbusy,
+    output logic txrequest,
+    output logic [6:0] hex0,
+    output logic [6:0] hex1,
+    output logic [6:0] hex2,
+    output logic [6:0] hex3,
+    output logic [7:0] data
+);
+
+    logic [3:0] UARTrx_counter;
+    logic [6:0] vivod;
+    logic [15:0] bit_timer; // Таймер для битов UART
+    logic UARTrx_sync;
+
+    // Синхронизация входа
+    always_ff @(posedge clk) begin
+        UARTrx_sync <= UARTrx;
+    end
+
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            UARTrx_counter <= 0;
+            rxbusy <= 0;
+            txrequest <= 0;
+            data <= 0;
+            hex0 <= 0;
+            hex1 <= 0;
+            hex2 <= 0;
+            hex3 <= 0;
+            bit_timer <= 0;
+        end
+        else begin
+            txrequest <= 0; // Сбрасываем запрос по умолчанию
+            
+            if (UARTrx_sync == 0 && ~rxbusy && ~txbusy && bit_timer == 0) begin
+                rxbusy <= 1;
+                bit_timer <= 434; // Половина битового интервала для 115200 бод
+                UARTrx_counter <= 0;
+            end
+            
+            if (rxbusy) begin
+                if (bit_timer > 0) begin
+                    bit_timer <= bit_timer - 1;
+                end
+                else begin
+                    if (UARTrx_counter < modrx) begin
+                        data[UARTrx_counter] <= UARTrx_sync;
+                        UARTrx_counter <= UARTrx_counter + 1;
+                        bit_timer <= 867; // Полный битовый интервал
+                    end
+                    else if (UARTrx_counter == modrx) begin
+                        // Обработка принятого символа
+                        case (data)
+                            8'b01000001, 8'b01100001 : vivod <= 7'b0001000; // A
+                            // ... остальные символы
+                            8'b01011010, 8'b01111010 : vivod <= 7'b1100100; // Z
+                            default: vivod <= 7'b1111111; // Пусто
+                        endcase
+                        
+                        hex3 <= hex2;
+                        hex2 <= hex1;
+                        hex1 <= hex0;
+                        hex0 <= vivod;
+                        
+                        // Шифр Цезаря
+                        if ((data >= 65 && data <= 90) || (data >= 97 && data <= 122)) begin                   
+                            data <= (data >= 65 && data <= 90) ? 
+                                   ((data > 90 - shift) ? (data + shift - 26) : (data + shift)) :
+                                   ((data >= 97 && data <= 122) ? 
+                                   ((data > 122 - shift) ? (data + shift - 26) : (data + shift)) : data);
+                            txrequest <= 1; 
+                        end
+                        
+                        rxbusy <= 0;
+                        UARTrx_counter <= UARTrx_counter + 1;
+                    end
+                end
+            end
+        end
+    end
+endmodule

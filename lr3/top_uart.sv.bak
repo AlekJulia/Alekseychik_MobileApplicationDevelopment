@@ -1,0 +1,51 @@
+`define v1_2 "-name IO_STANDARD \"1.2-V\""
+`define v3_3 "-name IO_STANDARD \"3.3-V\""
+`define v2_5 "-name IO_STANDARD \"2.5-V\""
+
+// Пины для 7-сегментных индикаторов (пример для Cyclone V GX Starter Kit)
+`define pins_hex0 "V19, V18, V17, W18, Y20, Y19, Y18"
+`define pins_hex1 "AA18, AD26, AB19, AE26, AE25, AC19, AF24"
+`define pins_hex2 "AD7, AD6, U20, V22, V20, W21, W20"
+`define pins_hex3 "Y24, Y23, AA23, AA22, AC24, AC23, AC22"
+
+// Пины для кнопок и тактового сигнала
+`define pin_clk "H12"           // Тактовый сигнал 50 MHz
+`define pin_reset "P11"         // Кнопка сброса (KEY0)
+`define pin_uart_rx "AF25"      // UART RX (GPIO)
+`define pin_uart_tx "AF26"      // UART TX (GPIO)
+
+module top_uart(
+    // Тактовый сигнал 50 MHz
+    (* chip_pin = `pin_clk *) input clk,
+    
+    // Кнопка сброса
+    (* altera_attribute = `v1_2, chip_pin = `pin_reset *) input reset,
+    
+    // UART интерфейс
+    (* altera_attribute = `v3_3, chip_pin = `pin_uart_rx *) input UARTrx,
+    (* altera_attribute = `v3_3, chip_pin = `pin_uart_tx *) output UARTtx,
+    
+    // 7-сегментные индикаторы
+    (* altera_attribute = `v1_2, chip_pin = `pins_hex3 *) output [6:0] hex3,
+    (* altera_attribute = `v1_2, chip_pin = `pins_hex2 *) output [6:0] hex2,
+    (* altera_attribute = `v3_3, chip_pin = `pins_hex1 *) output [6:0] hex1,
+    (* altera_attribute = `v3_3, chip_pin = `pins_hex0 *) output [6:0] hex0
+);
+
+    // Инстанс вашего UART модуля
+    uart #(
+        .CLK_FREQ(50000000),    // 50 MHz
+        .BAUD_RATE(115200),     // Скорость UART
+        .SHIFT(4)               // Сдвиг для шифра Цезаря
+    ) uart_inst (
+        .clk(clk),
+        .reset(reset),
+        .UARTrx(UARTrx),
+        .UARTtx(UARTtx),
+        .hex0(hex0),
+        .hex1(hex1),
+        .hex2(hex2),
+        .hex3(hex3)
+    );
+
+endmodule

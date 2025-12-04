@@ -1,0 +1,382 @@
+# Reading C:/altera/13.0sp1/modelsim_ase/tcl/vsim/pref.tcl 
+# do lr3_run_msim_rtl_verilog.do 
+# if {[file exists rtl_work]} {
+# 	vdel -lib rtl_work -all
+# }
+# vlib rtl_work
+# vmap work rtl_work
+# Copying C:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini
+# Modifying modelsim.ini
+# ** Warning: Copied C:\altera\13.0sp1\modelsim_ase\win32aloem/../modelsim.ini to modelsim.ini.
+#          Updated modelsim.ini.
+# 
+# vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/uartrx.sv}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module uartrx
+# 
+# Top level modules:
+# 	uartrx
+# vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/uarttx.sv}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module uarttx
+# 
+# Top level modules:
+# 	uarttx
+# vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/caesar_cipher.sv}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module caesar_cipher
+# 
+# Top level modules:
+# 	caesar_cipher
+# vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/uart_caesar.sv}
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module uart_caesar
+# 
+# Top level modules:
+# 	uart_caesar
+# 
+set curdir {D:\study\vhdl\lr3}
+# D:\study\vhdl\lr3
+set tb tb_uart_caesar
+# tb_uart_caesar
+vlog -sv $curdir/$tb.sv
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module tb_uart_caesar
+# ** Warning: D:\study\vhdl\lr3/tb_uart_caesar.sv(246): (vlog-LRM-2244) Variable 'test_word' is implicitly static. You must explicitly declare it as static or automatic.
+# 
+# ** Warning: D:\study\vhdl\lr3/tb_uart_caesar.sv(253): (vlog-LRM-2244) Variable 'expected_word' is implicitly static. You must explicitly declare it as static or automatic.
+# 
+# 
+# Top level modules:
+# 	tb_uart_caesar
+vlog -sv $curdir/$tb.sv
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module tb_uart_caesar
+# 
+# Top level modules:
+# 	tb_uart_caesar
+vsim work.tb_uart_caesar
+# vsim work.tb_uart_caesar 
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+add wave -position insertpoint  \
+sim:/tb_uart_caesar/clk
+add wave -position insertpoint  \
+sim:/tb_uart_caesar/reset
+add wave -position insertpoint  \
+sim:/tb_uart_caesar/uart_rx
+add wave -position insertpoint  \
+sim:/tb_uart_caesar/uart_tx
+run 10000ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: ✓ Byte 0x44 ('D') correctly received and verified
+# Time 4530000 ns: Sending byte 0x5a ('Z')
+# Time 4530000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 8130000 ns: ✓ Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8530000 ns: Sending byte 0x61 ('a')
+# Time 8530000 ns: Waiting for encoded byte 0x64 ('d')
+restart
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+run 20000ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: ✓ Byte 0x44 ('D') correctly received and verified
+# Time 4530000 ns: Sending byte 0x5a ('Z')
+# Time 4530000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 8130000 ns: ✓ Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8530000 ns: Sending byte 0x61 ('a')
+# Time 8530000 ns: Waiting for encoded byte 0x64 ('d')
+# Time 12130000 ns: ✓ Byte 0x64 ('d') correctly received and verified
+# Time 12530000 ns: Sending byte 0x7a ('z')
+# Time 12530000 ns: Waiting for encoded byte 0x63 ('c')
+# Time 16130000 ns: ✓ Byte 0x63 ('c') correctly received and verified
+# 
+# --- Test 3: Alphabet boundaries ---
+# Time 16530000 ns: Sending byte 0x58 ('X')
+# Time 16530000 ns: Waiting for encoded byte 0x41 ('A')
+run 5000ns
+# Time 20130000 ns: ✓ Byte 0x41 ('A') correctly received and verified
+# Time 20530000 ns: Sending byte 0x78 ('x')
+# Time 20530000 ns: Waiting for encoded byte 0x61 ('a')
+# Time 24130000 ns: ✓ Byte 0x61 ('a') correctly received and verified
+# 
+# --- Test 4: Numbers and special characters (no change) ---
+# Time 24530000 ns: Sending byte 0x31 ('1')
+# Time 24530000 ns: Waiting for encoded byte 0x31 ('1')
+run 5000ns
+# Time 28130000 ns: ✓ Byte 0x31 ('1') correctly received and verified
+# Time 28530000 ns: Sending byte 0x20 (' ')
+# Time 28530000 ns: Waiting for encoded byte 0x20 (' ')
+vlog -sv $curdir/$tb.sv
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module tb_uart_caesar
+# 
+# Top level modules:
+# 	tb_uart_caesar
+restart
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+run 20000ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: ✓ Byte 0x44 ('D') correctly received and verified
+# Time 4530000 ns: Sending byte 0x5a ('Z')
+# Time 4530000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 8130000 ns: ✓ Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8530000 ns: Sending byte 0x61 ('a')
+# Time 8530000 ns: Waiting for encoded byte 0x64 ('d')
+# Time 12130000 ns: ✓ Byte 0x64 ('d') correctly received and verified
+# Time 12530000 ns: Sending byte 0x7a ('z')
+# Time 12530000 ns: Waiting for encoded byte 0x63 ('c')
+# Time 16130000 ns: ✓ Byte 0x63 ('c') correctly received and verified
+# 
+# --- Test 3: Alphabet boundaries ---
+# Time 16530000 ns: Sending byte 0x58 ('X')
+# Time 16530000 ns: Waiting for encoded byte 0x41 ('A')
+run 10000ns
+# Time 20130000 ns: ✓ Byte 0x41 ('A') correctly received and verified
+# Time 20530000 ns: Sending byte 0x78 ('x')
+# Time 20530000 ns: Waiting for encoded byte 0x61 ('a')
+# Time 24130000 ns: ✓ Byte 0x61 ('a') correctly received and verified
+# 
+# --- Test 4: Numbers and special characters (no change) ---
+# Time 24530000 ns: Sending byte 0x31 ('1')
+# Time 24530000 ns: Waiting for encoded byte 0x31 ('1')
+# Time 28130000 ns: ✓ Byte 0x31 ('1') correctly received and verified
+# Time 28530000 ns: Sending byte 0x20 (' ')
+# Time 28530000 ns: Waiting for encoded byte 0x20 (' ')
+run 10000ns
+# Time 32130000 ns: ✓ Byte 0x20 (' ') correctly received and verified
+# Time 32530000 ns: Sending byte 0x21 ('!')
+# Time 32530000 ns: Waiting for encoded byte 0x21 ('!')
+# Time 36130000 ns: ✓ Byte 0x21 ('!') correctly received and verified
+# 
+# --- Test 5: Test word 'Hello' ---
+# Time 36530000 ns: Sending byte 0x48 ('H')
+# Time 36530000 ns: Waiting for encoded byte 0x4b ('K')
+vlog -sv $curdir/$tb.sv
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module tb_uart_caesar
+# 
+# Top level modules:
+# 	tb_uart_caesar
+restart
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+run 35000ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: ✓ Byte 0x44 ('D') correctly received and verified
+# Time 4430000 ns: Sending byte 0x5a ('Z')
+# Time 4430000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 7970000 ns: ✓ Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8270000 ns: Sending byte 0x61 ('a')
+# Time 8270000 ns: Waiting for encoded byte 0x64 ('d')
+# Time 11810000 ns: ✓ Byte 0x64 ('d') correctly received and verified
+# Time 12110000 ns: Sending byte 0x7a ('z')
+# Time 12110000 ns: Waiting for encoded byte 0x63 ('c')
+# Time 15650000 ns: ✓ Byte 0x63 ('c') correctly received and verified
+# 
+# --- Test 3: Alphabet boundaries ---
+# Time 15950000 ns: Sending byte 0x58 ('X')
+# Time 15950000 ns: Waiting for encoded byte 0x41 ('A')
+# Time 19490000 ns: ✓ Byte 0x41 ('A') correctly received and verified
+# Time 19790000 ns: Sending byte 0x78 ('x')
+# Time 19790000 ns: Waiting for encoded byte 0x61 ('a')
+# Time 23330000 ns: ✓ Byte 0x61 ('a') correctly received and verified
+# 
+# --- Test 4: Numbers and special characters (no change) ---
+# Time 23630000 ns: Sending byte 0x31 ('1')
+# Time 23630000 ns: Waiting for encoded byte 0x31 ('1')
+# Time 27170000 ns: ✓ Byte 0x31 ('1') correctly received and verified
+# Time 27470000 ns: Sending byte 0x20 (' ')
+# Time 27470000 ns: Waiting for encoded byte 0x20 (' ')
+# Time 31010000 ns: ✓ Byte 0x20 (' ') correctly received and verified
+# Time 31310000 ns: Sending byte 0x21 ('!')
+# Time 31310000 ns: Waiting for encoded byte 0x21 ('!')
+# Time 34850000 ns: ✓ Byte 0x21 ('!') correctly received and verified
+run 300ns
+# 
+# === TEST PASSED SUCCESSFULLY! Errors: 0 ===
+# All Caesar cipher transformations verified correctly!
+# Break in Module tb_uart_caesar at D:/study/vhdl/lr3/tb_uart_caesar.sv line 274
+restart
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+run 35200ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: ✓ Byte 0x44 ('D') correctly received and verified
+# Time 4430000 ns: Sending byte 0x5a ('Z')
+# Time 4430000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 7970000 ns: ✓ Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8270000 ns: Sending byte 0x61 ('a')
+# Time 8270000 ns: Waiting for encoded byte 0x64 ('d')
+# Time 11810000 ns: ✓ Byte 0x64 ('d') correctly received and verified
+# Time 12110000 ns: Sending byte 0x7a ('z')
+# Time 12110000 ns: Waiting for encoded byte 0x63 ('c')
+# Time 15650000 ns: ✓ Byte 0x63 ('c') correctly received and verified
+# 
+# --- Test 3: Alphabet boundaries ---
+# Time 15950000 ns: Sending byte 0x58 ('X')
+# Time 15950000 ns: Waiting for encoded byte 0x41 ('A')
+# Time 19490000 ns: ✓ Byte 0x41 ('A') correctly received and verified
+# Time 19790000 ns: Sending byte 0x78 ('x')
+# Time 19790000 ns: Waiting for encoded byte 0x61 ('a')
+# Time 23330000 ns: ✓ Byte 0x61 ('a') correctly received and verified
+# 
+# --- Test 4: Numbers and special characters (no change) ---
+# Time 23630000 ns: Sending byte 0x31 ('1')
+# Time 23630000 ns: Waiting for encoded byte 0x31 ('1')
+# Time 27170000 ns: ✓ Byte 0x31 ('1') correctly received and verified
+# Time 27470000 ns: Sending byte 0x20 (' ')
+# Time 27470000 ns: Waiting for encoded byte 0x20 (' ')
+# Time 31010000 ns: ✓ Byte 0x20 (' ') correctly received and verified
+# Time 31310000 ns: Sending byte 0x21 ('!')
+# Time 31310000 ns: Waiting for encoded byte 0x21 ('!')
+# Time 34850000 ns: ✓ Byte 0x21 ('!') correctly received and verified
+vlog -sv $curdir/$tb.sv
+# Model Technology ModelSim ALTERA vlog 10.1d Compiler 2012.11 Nov  2 2012
+# -- Compiling module tb_uart_caesar
+# 
+# Top level modules:
+# 	tb_uart_caesar
+restart
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+run 25500ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: Byte 0x44 ('D') correctly received and verified
+# Time 4430000 ns: Sending byte 0x5a ('Z')
+# Time 4430000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 7970000 ns: Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8270000 ns: Sending byte 0x61 ('a')
+# Time 8270000 ns: Waiting for encoded byte 0x64 ('d')
+# Time 11810000 ns: Byte 0x64 ('d') correctly received and verified
+# Time 12110000 ns: Sending byte 0x7a ('z')
+# Time 12110000 ns: Waiting for encoded byte 0x63 ('c')
+# Time 15650000 ns: Byte 0x63 ('c') correctly received and verified
+# 
+# --- Test 3: Alphabet boundaries ---
+# Time 15950000 ns: Sending byte 0x58 ('X')
+# Time 15950000 ns: Waiting for encoded byte 0x41 ('A')
+# Time 19490000 ns: Byte 0x41 ('A') correctly received and verified
+# Time 19790000 ns: Sending byte 0x78 ('x')
+# Time 19790000 ns: Waiting for encoded byte 0x61 ('a')
+# Time 23330000 ns: Byte 0x61 ('a') correctly received and verified
+# 
+# --- Test 4: Numbers and special characters (no change) ---
+# Time 23630000 ns: Sending byte 0x31 ('1')
+# Time 23630000 ns: Waiting for encoded byte 0x31 ('1')
+restart
+# Loading sv_std.std
+# Loading work.tb_uart_caesar
+# Loading work.uart_caesar
+# Loading work.uartrx
+# Loading work.caesar_cipher
+# Loading work.uarttx
+run 35500ns
+# === Starting UART Caesar Cipher Test ===
+# Caesar shift value: 3
+# 
+# --- Test 1: Uppercase letters ---
+# Time 500000 ns: Sending byte 0x41 ('A')
+# Time 500000 ns: Waiting for encoded byte 0x44 ('D')
+# Time 4130000 ns: Byte 0x44 ('D') correctly received and verified
+# Time 4430000 ns: Sending byte 0x5a ('Z')
+# Time 4430000 ns: Waiting for encoded byte 0x43 ('C')
+# Time 7970000 ns: Byte 0x43 ('C') correctly received and verified
+# 
+# --- Test 2: Lowercase letters ---
+# Time 8270000 ns: Sending byte 0x61 ('a')
+# Time 8270000 ns: Waiting for encoded byte 0x64 ('d')
+# Time 11810000 ns: Byte 0x64 ('d') correctly received and verified
+# Time 12110000 ns: Sending byte 0x7a ('z')
+# Time 12110000 ns: Waiting for encoded byte 0x63 ('c')
+# Time 15650000 ns: Byte 0x63 ('c') correctly received and verified
+# 
+# --- Test 3: Alphabet boundaries ---
+# Time 15950000 ns: Sending byte 0x58 ('X')
+# Time 15950000 ns: Waiting for encoded byte 0x41 ('A')
+# Time 19490000 ns: Byte 0x41 ('A') correctly received and verified
+# Time 19790000 ns: Sending byte 0x78 ('x')
+# Time 19790000 ns: Waiting for encoded byte 0x61 ('a')
+# Time 23330000 ns: Byte 0x61 ('a') correctly received and verified
+# 
+# --- Test 4: Numbers and special characters (no change) ---
+# Time 23630000 ns: Sending byte 0x31 ('1')
+# Time 23630000 ns: Waiting for encoded byte 0x31 ('1')
+# Time 27170000 ns: Byte 0x31 ('1') correctly received and verified
+# Time 27470000 ns: Sending byte 0x20 (' ')
+# Time 27470000 ns: Waiting for encoded byte 0x20 (' ')
+# Time 31010000 ns: Byte 0x20 (' ') correctly received and verified
+# Time 31310000 ns: Sending byte 0x21 ('!')
+# Time 31310000 ns: Waiting for encoded byte 0x21 ('!')
+# Time 34850000 ns: Byte 0x21 ('!') correctly received and verified
+# 
+# === TEST PASSED SUCCESSFULLY! Errors: 0 ===
+# All Caesar cipher transformations verified correctly!
+# Break in Module tb_uart_caesar at D:/study/vhdl/lr3/tb_uart_caesar.sv line 251

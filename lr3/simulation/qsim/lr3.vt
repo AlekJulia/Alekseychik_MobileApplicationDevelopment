@@ -1,0 +1,215 @@
+// Copyright (C) 1991-2013 Altera Corporation
+// Your use of Altera Corporation's design tools, logic functions 
+// and other software and tools, and its AMPP partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Altera Program License 
+// Subscription Agreement, Altera MegaCore Function License 
+// Agreement, or other applicable license agreement, including, 
+// without limitation, that your use is for the sole purpose of 
+// programming logic devices manufactured by Altera and sold by 
+// Altera or its authorized distributors.  Please refer to the 
+// applicable agreement for further details.
+
+// *****************************************************************************
+// This file contains a Verilog test bench with test vectors .The test vectors  
+// are exported from a vector file in the Quartus Waveform Editor and apply to  
+// the top level entity of the current Quartus project .The user can use this   
+// testbench to simulate his design using a third-party simulation tool .       
+// *****************************************************************************
+// Generated on "11/30/2025 17:30:33"
+                                                                        
+// Verilog Self-Checking Test Bench (with test vectors) for design :    uart
+// 
+// Simulation tool : 3rd Party
+// 
+
+`timescale 1 ps/ 1 ps
+module uart_vlg_sample_tst(
+	clk50,
+	reset_n,
+	uart_rx,
+	sampler_tx
+);
+input  clk50;
+input  reset_n;
+input  uart_rx;
+output sampler_tx;
+
+reg sample;
+time current_time;
+always @(clk50 or reset_n or uart_rx)
+                                                                                
+begin                                                 
+ if ($realtime > 0)                                   
+ begin                                                
+	if ($realtime == 0 || $realtime != current_time)  
+	begin									          
+		if (sample === 1'bx)                          
+			sample = 0;                               
+		else                                          
+			sample = ~sample;                         
+	end										          
+	current_time = $realtime;					      
+ end                                                  
+end                                                   
+
+assign sampler_tx = sample;
+endmodule
+
+module uart_vlg_check_tst (
+	uart_tx,
+	sampler_rx
+);
+input  uart_tx;
+input sampler_rx;
+
+reg  uart_tx_expected;
+
+reg  uart_tx_prev;
+
+reg  uart_tx_expected_prev;
+
+reg  last_uart_tx_exp;
+
+reg trigger;
+
+integer i;
+integer nummismatches;
+
+reg [1:1] on_first_change ;
+
+
+initial
+begin
+trigger = 0;
+i = 0;
+nummismatches = 0;
+on_first_change = 1'b1;
+end
+
+// update real /o prevs
+
+always @(trigger)
+begin
+	uart_tx_prev = uart_tx;
+end
+
+// update expected /o prevs
+
+always @(trigger)
+begin
+	uart_tx_expected_prev = uart_tx_expected;
+end
+
+
+
+// expected uart_tx
+initial
+begin
+	uart_tx_expected = 1'bX;
+	uart_tx_expected = #999000 1'b0;
+end 
+// generate trigger
+always @(uart_tx_expected or uart_tx)
+begin
+	trigger <= ~trigger;
+end
+
+always @(posedge sampler_rx or negedge sampler_rx)
+begin
+`ifdef debug_tbench
+	$display("Scanning pattern %d @time = %t",i,$realtime );
+	i = i + 1;
+	$display("| expected uart_tx = %b | ",uart_tx_expected_prev);
+	$display("| real uart_tx = %b | ",uart_tx_prev);
+`endif
+	if (
+		( uart_tx_expected_prev !== 1'bx ) && ( uart_tx_prev !== uart_tx_expected_prev )
+		&& ((uart_tx_expected_prev !== last_uart_tx_exp) ||
+			on_first_change[1])
+	)
+	begin
+		$display ("ERROR! Vector Mismatch for output port uart_tx :: @time = %t",  $realtime);
+		$display ("     Expected value = %b", uart_tx_expected_prev);
+		$display ("     Real value = %b", uart_tx_prev);
+		nummismatches = nummismatches + 1;
+		on_first_change[1] = 1'b0;
+		last_uart_tx_exp = uart_tx_expected_prev;
+	end
+
+	trigger <= ~trigger;
+end
+initial 
+
+begin 
+$timeformat(-12,3," ps",6);
+#4000000;
+if (nummismatches > 0)
+	$display ("%d mismatched vectors : Simulation failed !",nummismatches);
+else
+	$display ("Simulation passed !");
+$finish;
+end 
+endmodule
+
+module uart_vlg_vec_tst();
+// constants                                           
+// general purpose registers
+reg clk50;
+reg reset_n;
+reg uart_rx;
+// wires                                               
+wire uart_tx;
+
+wire sampler;                             
+
+// assign statements (if any)                          
+uart i1 (
+// port map - connection between master ports and signals/registers   
+	.clk50(clk50),
+	.reset_n(reset_n),
+	.uart_rx(uart_rx),
+	.uart_tx(uart_tx)
+);
+
+// clk50
+always
+begin
+	clk50 = 1'b0;
+	clk50 = #10000 1'b1;
+	#10000;
+end 
+
+// reset_n
+initial
+begin
+	reset_n = 1'b1;
+end 
+
+// uart_rx
+initial
+begin
+	uart_rx = 1'b1;
+	uart_rx = #190000 1'b0;
+	uart_rx = #320000 1'b1;
+	uart_rx = #320000 1'b0;
+	uart_rx = #160000 1'b1;
+	uart_rx = #160000 1'b0;
+	uart_rx = #480000 1'b1;
+end 
+
+uart_vlg_sample_tst tb_sample (
+	.clk50(clk50),
+	.reset_n(reset_n),
+	.uart_rx(uart_rx),
+	.sampler_tx(sampler)
+);
+
+uart_vlg_check_tst tb_out(
+	.uart_tx(uart_tx),
+	.sampler_rx(sampler)
+);
+endmodule
+

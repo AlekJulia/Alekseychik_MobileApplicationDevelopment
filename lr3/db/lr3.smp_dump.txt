@@ -1,0 +1,8 @@
+
+State Machine - |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|state
+Name state.PAR state.BITS state.START state.IDLE state.STOP 
+state.IDLE 0 0 0 0 0 
+state.START 0 0 1 1 0 
+state.BITS 0 1 0 1 0 
+state.PAR 1 0 0 1 0 
+state.STOP 0 0 0 1 1 

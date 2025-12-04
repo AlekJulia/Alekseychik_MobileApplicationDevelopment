@@ -1,0 +1,113 @@
+`timescale 1ns/1ps
+
+module tb_uart_full;
+
+    // -----------------------------
+    // Генерация такта 50 МГц
+    // -----------------------------
+    logic clk = 0;
+    always #10 clk = ~clk;
+
+    logic reset = 1;
+
+    logic tx;         // UART TX
+    logic rx = 1;     // UART RX line
+
+    logic start;
+    logic [7:0] tx_data;
+    logic tx_busy;
+
+    logic [7:0] rx_data;
+    logic rx_valid;
+
+
+    // -----------------------------
+    // Инстансы твоих модулей UART
+    // -----------------------------
+    uarttx #(.CLK_FREQ(50_000_000), .BAUD(115200)) TX (
+        .clk(clk),
+        .reset(reset),
+        .start(start),
+        .data(tx_data),
+        .tx(tx),
+        .busy(tx_busy)
+    );
+
+    uartrx #(.CLK_FREQ(50_000_000), .BAUD(115200)) RX (
+        .clk(clk),
+        .reset(reset),
+        .rx(rx),
+        .data_valid(rx_valid),
+        .data(rx_data)
+    );
+
+
+    // -----------------------------------------------------
+    // Внутренний "провод" между TX → RX (loopback)
+    // -----------------------------------------------------
+    always @(tx) begin
+        rx = tx;
+    end
+
+    // -----------------------------------------------------
+    // TASK: отправить байт через TX
+    // -----------------------------------------------------
+    task send_byte(input [7:0] b);
+        begin
+            @(negedge clk);
+            tx_data = b;
+            start   = 1;
+
+            @(negedge clk);
+            start   = 0;
+
+            wait(!tx_busy);
+        end
+    endtask
+
+
+    // -----------------------------------------------------
+    // TASK: ждать и проверять принятие байта
+    // -----------------------------------------------------
+    task check_received(input [7:0] expected);
+        begin
+            wait(rx_valid);
+
+            if (rx_data !== expected)
+                $display("FAIL: expected %02h, received %02h TIME=%0t", expected, rx_data, $time);
+            else
+                $display("PASS: received %02h correctly TIME=%0t", rx_data, $time);
+        end
+    endtask
+
+
+    // -----------------------------------------------------
+    // ОСНОВНОЙ ТЕСТ
+    // -----------------------------------------------------
+    initial begin
+        integer i;
+
+        // Список тестовых значений
+        byte test_data[16] = '{
+            8'h00, 8'h01, 8'h55, 8'hAA, 8'h7E, 
+            "A", "Z", "0", "9",
+            "a", "z", 8'hFF,
+            8'h13, 8'h37, 8'hC3, 8'h5A
+        };
+
+        $display("\n=== UART FULL SELF-TEST START ===\n");
+
+        #200 reset = 0;
+        #500;
+
+        for (i = 0; i < test_data.size(); i++) begin
+            $display("\n--- SEND BYTE %0d: %02h ---", i, test_data[i]);
+            send_byte(test_data[i]);
+            check_received(test_data[i]);
+        end
+
+        $display("\n=== TEST COMPLETE ===\n");
+        #2000 $finish;
+    end
+
+endmodule

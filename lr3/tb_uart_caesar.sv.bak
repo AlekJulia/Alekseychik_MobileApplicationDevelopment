@@ -1,0 +1,277 @@
+`timescale 1ns/1ps
+
+module tb_uart_caesar;
+
+    // ----------------------------
+    // Временные параметры симуляции
+    // ----------------------------
+    parameter CLK_PERIOD  = 20;   // период clk 20нс -> freq = 50 MHz
+    parameter BAUD_PERIOD = 160;  // 6.25 Mbaud, 1 bit = 160 ns
+
+    // ----------------------------
+    // Основные сигналы
+    // ----------------------------
+    reg clk;
+    reg reset;
+    reg uart_rx;
+    wire uart_tx;
+
+    // Параметры шифра
+    parameter SHIFT = 3;
+
+    integer i;
+    integer error_count;
+
+    // ----------------------------
+    // Создание экземпляра устройства для тестирования
+    // ----------------------------
+    uart_caesar #(
+        .CLK_FREQ(50_000_000),
+        .BAUD(6_250_000),
+        .SHIFT(SHIFT)
+    ) uart_caesar_dut (
+        .clk50(clk),
+        .reset_n(~reset),
+        .uart_rx(uart_rx),
+        .uart_tx(uart_tx)
+    );
+
+    // ----------------------------
+    // Генерация тактового сигнала
+    // ----------------------------
+    initial clk = 0;
+    always #(CLK_PERIOD/2) clk = ~clk;
+
+    // -----------------------------
+    // Начальный сброс 
+    // -----------------------------
+    initial begin
+        reset   = 1;
+        uart_rx = 1;     // idle
+        error_count = 0;
+        #200;
+        reset = 0;
+        
+        $display("=== Starting UART Caesar Cipher Test ===");
+        $display("Caesar shift value: %0d", SHIFT);
+    end
+
+    // ------------------------------
+    // TASK: Отправка UART байта
+    // ----------------------------
+    task send_uart_byte;
+        input [7:0] b;
+        integer j;
+        reg parity;
+        begin
+            parity = ^b;   // even parity
+
+            $display("Time %0t ns: Sending byte 0x%h ('%s')", $time, b, byte_to_char(b));
+
+            // START bit
+            uart_rx = 0;
+            #(BAUD_PERIOD);
+
+            // DATA bits
+            for (j=0; j<8; j=j+1) begin
+                uart_rx = b[j];
+                #(BAUD_PERIOD);
+            end
+
+            // PARITY bit
+            uart_rx = parity;
+            #(BAUD_PERIOD);
+
+            // STOP bit
+            uart_rx = 1;
+            #(BAUD_PERIOD);
+        end
+    endtask
+
+    // ----------------------------
+    // TASK: Побитовая проверка полученных данных
+    // ----------------------------
+    task check_uart_byte;
+        input [7:0] expected_byte;
+        integer k;
+        reg expected_parity;
+        reg received_bit;
+        begin
+            expected_parity = ^expected_byte;
+
+            $display("Time %0t ns: Waiting for encoded byte 0x%h ('%s')", 
+                     $time, expected_byte, byte_to_char(expected_byte));
+
+            // Ожидание START bit = 0
+            wait(uart_tx === 0);
+            #(BAUD_PERIOD/2); // Ждем центра бита
+
+            // Проверка битов данных (LSB first)
+            for (k=0; k<8; k=k+1) begin
+                #(BAUD_PERIOD);
+                received_bit = uart_tx; 
+                if (received_bit !== expected_byte[k]) begin
+                    $error("Error in bit %0d: expected %b, received %b", 
+                           k, expected_byte[k], received_bit);
+                    error_count = error_count + 1;
+                end
+            end
+
+            // Проверка бита четности PARITY bit
+            #(BAUD_PERIOD);
+            received_bit = uart_tx;
+            if (received_bit !== expected_parity) begin
+                $error("Error in parity bit: expected %b, received %b", 
+                       expected_parity, received_bit);
+                error_count = error_count + 1;
+            end
+
+            // Проверка стопового бита STOP bit = 1
+            #(BAUD_PERIOD);
+            received_bit = uart_tx;
+            if (received_bit !== 1'b1) begin
+                $error("Error in STOP bit: expected 1, received %b", received_bit);
+                error_count = error_count + 1;
+            end
+
+            $display("Time %0t ns: ✓ Byte 0x%h ('%s') correctly received and verified", 
+                     $time, expected_byte, byte_to_char(expected_byte));
+        end
+    endtask
+
+    // ----------------------------
+    // Функция для отображения символов
+    // ----------------------------
+    function string byte_to_char;
+        input [7:0] b;
+        begin
+            if (b >= 8'h20 && b <= 8'h7E)
+                byte_to_char = $sformatf("%c", b);
+            else
+                byte_to_char = "?";
+        end
+    endfunction
+
+    // ----------------------------
+    // Функция шифрования Цезаря для тестов
+    // ----------------------------
+    function [7:0] caesar_encrypt;
+        input [7:0] char;
+        begin
+            // По умолчанию - без изменений
+            caesar_encrypt = char;
+            
+            // Заглавные буквы A-Z
+            if (char >= "A" && char <= "Z") begin
+                caesar_encrypt = "A" + ((char - "A" + SHIFT) % 26);
+            end
+            // Строчные буквы a-z
+            else if (char >= "a" && char <= "z") begin
+                caesar_encrypt = "a" + ((char - "a" + SHIFT) % 26);
+            end
+        end
+    endfunction
+
+    // ----------------------------
+    // Основная симуляция
+    // ----------------------------
+    initial begin
+        #500;
+
+        // Test 1: Заглавные буквы
+        $display("\n--- Test 1: Uppercase letters ---");
+        fork
+            send_uart_byte("A");  // Отправляем 'A'
+            check_uart_byte(caesar_encrypt("A"));  // Ожидаем 'D'
+        join
+        #400;
+
+        fork
+            send_uart_byte("Z");  // Отправляем 'Z'
+            check_uart_byte(caesar_encrypt("Z"));  // Ожидаем 'C'
+        join
+        #400;
+
+        // Test 2: Строчные буквы
+        $display("\n--- Test 2: Lowercase letters ---");
+        fork
+            send_uart_byte("a");  // Отправляем 'a'
+            check_uart_byte(caesar_encrypt("a"));  // Ожидаем 'd'
+        join
+        #400;
+
+        fork
+            send_uart_byte("z");  // Отправляем 'z'
+            check_uart_byte(caesar_encrypt("z"));  // Ожидаем 'c'
+        join
+        #400;
+
+        // Test 3: Граничные случаи алфавита
+        $display("\n--- Test 3: Alphabet boundaries ---");
+        fork
+            send_uart_byte("X");  // Отправляем 'X'
+            check_uart_byte(caesar_encrypt("X"));  // Ожидаем 'A'
+        join
+        #400;
+
+        fork
+            send_uart_byte("x");  // Отправляем 'x'
+            check_uart_byte(caesar_encrypt("x"));  // Ожидаем 'a'
+        join
+        #400;
+
+        // Test 4: Цифры и спецсимволы (не должны изменяться)
+        $display("\n--- Test 4: Numbers and special characters (no change) ---");
+        fork
+            send_uart_byte("1");  // Отправляем '1'
+            check_uart_byte("1");  // Ожидаем '1' (без изменений)
+        join
+        #400;
+
+        fork
+            send_uart_byte(" ");  // Отправляем пробел
+            check_uart_byte(" ");  // Ожидаем пробел (без изменений)
+        join
+        #400;
+
+        fork
+            send_uart_byte("!");  // Отправляем '!'
+            check_uart_byte("!");  // Ожидаем '!' (без изменений)
+        join
+        #400;
+
+        // Test 5: Тестовое слово
+        $display("\n--- Test 5: Test word 'Hello' ---");
+        begin
+            reg [7:0] test_word [5] = {"H", "e", "l", "l", "o"};
+            reg [7:0] expected_word [5] = {
+                caesar_encrypt("H"), // 'K'
+                caesar_encrypt("e"), // 'h'
+                caesar_encrypt("l"), // 'o'
+                caesar_encrypt("l"), // 'o'
+                caesar_encrypt("o")  // 'r'
+            };
+            
+            for (i = 0; i < 5; i = i + 1) begin
+                fork
+                    automatic integer idx = i;
+                    send_uart_byte(test_word[idx]);
+                    check_uart_byte(expected_word[idx]);
+                join
+                #400;
+            end
+        end
+
+        // Итоговый вывод
+        #1000;
+        if (error_count == 0) begin
+            $display("\n=== TEST PASSED SUCCESSFULLY! Errors: %0d ===", error_count);
+            $display("All Caesar cipher transformations verified correctly!");
+        end else begin
+            $display("\n=== TEST FAILED! Errors: %0d ===", error_count);
+        end
+
+        $stop;
+    end
+
+endmodule
