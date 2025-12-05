@@ -1,0 +1,14 @@
+transcript on
+if {[file exists rtl_work]} {
+	vdel -lib rtl_work -all
+}
+vlib rtl_work
+vmap work rtl_work
+
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uartrx.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uarttx.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/top_uart.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/caesar_cipher.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/top_uart_caesar.sv}
+

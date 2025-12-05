@@ -1,6 +1,6 @@
 Analysis & Synthesis report for lr3
-Sun Nov 30 23:18:24 2025
-Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+Sat Dec 06 02:11:15 2025
+Quartus II 32-bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
 ---------------------
@@ -13,21 +13,19 @@ Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edit
   5. Analysis & Synthesis Source Files Read
   6. Analysis & Synthesis Resource Usage Summary
   7. Analysis & Synthesis Resource Utilization by Entity
-  8. State Machine - |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|state
-  9. Registers Removed During Synthesis
- 10. General Register Statistics
- 11. Inverted Register Statistics
- 12. Multiplexer Restructuring Statistics (Restructuring Performed)
- 13. Source assignments for Top-level Entity: |top_uart_caesar
- 14. Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst
- 15. Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst|uartrx:RX
- 16. Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst|caesar_cipher:C1
- 17. Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst|uarttx:TX
- 18. Parameter Settings for Inferred Entity Instance: uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0
- 19. Parameter Settings for Inferred Entity Instance: uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod1
- 20. Elapsed Time Per Partition
- 21. Analysis & Synthesis Messages
- 22. Analysis & Synthesis Suppressed Messages
+  8. Registers Removed During Synthesis
+  9. General Register Statistics
+ 10. Inverted Register Statistics
+ 11. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 12. Source assignments for Top-level Entity: |uart_echo_top
+ 13. Parameter Settings for User Entity Instance: uart_echo:uart_echo_controller
+ 14. Parameter Settings for User Entity Instance: uart_echo:uart_echo_controller|uart_receiver:receiver
+ 15. Parameter Settings for User Entity Instance: uart_echo:uart_echo_controller|uart_transmitter:transmitter
+ 16. Port Connectivity Checks: "uart_echo:uart_echo_controller|uart_transmitter:transmitter"
+ 17. Port Connectivity Checks: "uart_echo:uart_echo_controller|uart_receiver:receiver"
+ 18. Elapsed Time Per Partition
+ 19. Analysis & Synthesis Messages
+ 20. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -53,13 +51,13 @@ applicable agreement for further details.
 +---------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                          ;
 +-------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status         ; Successful - Sun Nov 30 23:18:24 2025           ;
-; Quartus II 64-Bit Version           ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
+; Analysis & Synthesis Status         ; Successful - Sat Dec 06 02:11:15 2025           ;
+; Quartus II 32-bit Version           ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                       ; lr3                                             ;
-; Top-level Entity Name               ; top_uart_caesar                                 ;
+; Top-level Entity Name               ; uart_echo_top                                   ;
 ; Family                              ; Cyclone V                                       ;
 ; Logic utilization (in ALMs)         ; N/A                                             ;
-; Total registers                     ; 68                                              ;
+; Total registers                     ; 78                                              ;
 ; Total pins                          ; 4                                               ;
 ; Total virtual pins                  ; 0                                               ;
 ; Total block memory bits             ; 0                                               ;
@@ -81,7 +79,7 @@ applicable agreement for further details.
 ; Option                                                                          ; Setting            ; Default Value      ;
 +---------------------------------------------------------------------------------+--------------------+--------------------+
 ; Device                                                                          ; 5CGXFC5C6F27C7     ;                    ;
-; Top-level entity name                                                           ; top_uart_caesar    ; lr3                ;
+; Top-level entity name                                                           ; uart_echo_top      ; lr3                ;
 ; Family name                                                                     ; Cyclone V          ; Cyclone IV GX      ;
 ; Use smart compilation                                                           ; Off                ; Off                ;
 ; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation      ; On                 ; On                 ;
@@ -173,98 +171,68 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +----------------------------+--------+
 
 
-+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                              ;
-+----------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                          ; Library ;
-+----------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------+---------+
-; uartrx.sv                        ; yes             ; User SystemVerilog HDL File  ; D:/study/vhdl/lr3/uartrx.sv                                           ;         ;
-; uarttx.sv                        ; yes             ; User SystemVerilog HDL File  ; D:/study/vhdl/lr3/uarttx.sv                                           ;         ;
-; top_uart.sv                      ; yes             ; User SystemVerilog HDL File  ; D:/study/vhdl/lr3/top_uart.sv                                         ;         ;
-; caesar_cipher.sv                 ; yes             ; User SystemVerilog HDL File  ; D:/study/vhdl/lr3/caesar_cipher.sv                                    ;         ;
-; uart_caesar.sv                   ; yes             ; User SystemVerilog HDL File  ; D:/study/vhdl/lr3/uart_caesar.sv                                      ;         ;
-; top_uart_caesar.sv               ; yes             ; User SystemVerilog HDL File  ; D:/study/vhdl/lr3/top_uart_caesar.sv                                  ;         ;
-; lpm_divide.tdf                   ; yes             ; Megafunction                 ; c:/altera/13.0sp1/quartus/libraries/megafunctions/lpm_divide.tdf      ;         ;
-; abs_divider.inc                  ; yes             ; Megafunction                 ; c:/altera/13.0sp1/quartus/libraries/megafunctions/abs_divider.inc     ;         ;
-; sign_div_unsign.inc              ; yes             ; Megafunction                 ; c:/altera/13.0sp1/quartus/libraries/megafunctions/sign_div_unsign.inc ;         ;
-; aglobal130.inc                   ; yes             ; Megafunction                 ; c:/altera/13.0sp1/quartus/libraries/megafunctions/aglobal130.inc      ;         ;
-; db/lpm_divide_m3m.tdf            ; yes             ; Auto-Generated Megafunction  ; D:/study/vhdl/lr3/db/lpm_divide_m3m.tdf                               ;         ;
-; db/sign_div_unsign_plh.tdf       ; yes             ; Auto-Generated Megafunction  ; D:/study/vhdl/lr3/db/sign_div_unsign_plh.tdf                          ;         ;
-; db/alt_u_div_ove.tdf             ; yes             ; Auto-Generated Megafunction  ; D:/study/vhdl/lr3/db/alt_u_div_ove.tdf                                ;         ;
-+----------------------------------+-----------------+------------------------------+-----------------------------------------------------------------------+---------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                         ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                                     ; Library ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------------------------+---------+
+; uart_caesar_cipher.sv            ; yes             ; User SystemVerilog HDL File  ; C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar_cipher.sv ;         ;
+; flow_control.sv                  ; yes             ; User SystemVerilog HDL File  ; C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/flow_control.sv       ;         ;
+; uart_echo.sv                     ; yes             ; User SystemVerilog HDL File  ; C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo.sv          ;         ;
+; uart_receiver.sv                 ; yes             ; User SystemVerilog HDL File  ; C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_receiver.sv      ;         ;
+; uart_transmitter.sv              ; yes             ; User SystemVerilog HDL File  ; C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_transmitter.sv   ;         ;
+; uart_echo_top.sv                 ; yes             ; User SystemVerilog HDL File  ; C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo_top.sv      ;         ;
++----------------------------------+-----------------+------------------------------+--------------------------------------------------------------------------------------------------+---------+
 
 
-+---------------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary             ;
-+---------------------------------------------+-----------+
-; Resource                                    ; Usage     ;
-+---------------------------------------------+-----------+
-; Estimate of Logic utilization (ALMs needed) ; 192       ;
-;                                             ;           ;
-; Combinational ALUT usage for logic          ; 371       ;
-;     -- 7 input functions                    ; 0         ;
-;     -- 6 input functions                    ; 10        ;
-;     -- 5 input functions                    ; 43        ;
-;     -- 4 input functions                    ; 40        ;
-;     -- <=3 input functions                  ; 278       ;
-;                                             ;           ;
-; Dedicated logic registers                   ; 68        ;
-;                                             ;           ;
-; I/O pins                                    ; 4         ;
-; Total DSP Blocks                            ; 0         ;
-; Maximum fan-out node                        ; clk~input ;
-; Maximum fan-out                             ; 68        ;
-; Total fan-out                               ; 1343      ;
-; Average fan-out                             ; 3.00      ;
-+---------------------------------------------+-----------+
++------------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                      ;
++---------------------------------------------+--------------------+
+; Resource                                    ; Usage              ;
++---------------------------------------------+--------------------+
+; Estimate of Logic utilization (ALMs needed) ; 97                 ;
+;                                             ;                    ;
+; Combinational ALUT usage for logic          ; 152                ;
+;     -- 7 input functions                    ; 0                  ;
+;     -- 6 input functions                    ; 38                 ;
+;     -- 5 input functions                    ; 33                 ;
+;     -- 4 input functions                    ; 21                 ;
+;     -- <=3 input functions                  ; 60                 ;
+;                                             ;                    ;
+; Dedicated logic registers                   ; 78                 ;
+;                                             ;                    ;
+; I/O pins                                    ; 4                  ;
+; Total DSP Blocks                            ; 0                  ;
+; Maximum fan-out node                        ; system_clock~input ;
+; Maximum fan-out                             ; 78                 ;
+; Total fan-out                               ; 904                ;
+; Average fan-out                             ; 3.80               ;
++---------------------------------------------+--------------------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                    ;
-+----------------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
-; Compilation Hierarchy Node                   ; LC Combinationals ; LC Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                            ; Library Name ;
-+----------------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
-; |top_uart_caesar                             ; 371 (0)           ; 68 (0)       ; 0                 ; 0          ; 4    ; 0            ; |top_uart_caesar                                                                                                                                               ; work         ;
-;    |uart_caesar:uart_caesar_inst|            ; 371 (1)           ; 68 (2)       ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst                                                                                                                  ; work         ;
-;       |caesar_cipher:C1|                     ; 291 (58)          ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1                                                                                                 ; work         ;
-;          |lpm_divide:Mod0|                   ; 116 (0)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0                                                                                 ; work         ;
-;             |lpm_divide_m3m:auto_generated|  ; 116 (0)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0|lpm_divide_m3m:auto_generated                                                   ; work         ;
-;                |sign_div_unsign_plh:divider| ; 116 (0)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0|lpm_divide_m3m:auto_generated|sign_div_unsign_plh:divider                       ; work         ;
-;                   |alt_u_div_ove:divider|    ; 116 (116)         ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0|lpm_divide_m3m:auto_generated|sign_div_unsign_plh:divider|alt_u_div_ove:divider ; work         ;
-;          |lpm_divide:Mod1|                   ; 117 (0)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod1                                                                                 ; work         ;
-;             |lpm_divide_m3m:auto_generated|  ; 117 (0)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod1|lpm_divide_m3m:auto_generated                                                   ; work         ;
-;                |sign_div_unsign_plh:divider| ; 117 (0)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod1|lpm_divide_m3m:auto_generated|sign_div_unsign_plh:divider                       ; work         ;
-;                   |alt_u_div_ove:divider|    ; 117 (117)         ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod1|lpm_divide_m3m:auto_generated|sign_div_unsign_plh:divider|alt_u_div_ove:divider ; work         ;
-;       |uartrx:RX|                            ; 47 (47)           ; 40 (40)      ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX                                                                                                        ; work         ;
-;       |uarttx:TX|                            ; 32 (32)           ; 26 (26)      ; 0                 ; 0          ; 0    ; 0            ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uarttx:TX                                                                                                        ; work         ;
-+----------------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                        ;
++--------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------+--------------+
+; Compilation Hierarchy Node           ; LC Combinationals ; LC Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                        ; Library Name ;
++--------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------+--------------+
+; |uart_echo_top                       ; 152 (0)           ; 78 (0)       ; 0                 ; 0          ; 4    ; 0            ; |uart_echo_top                                                             ; work         ;
+;    |uart_echo:uart_echo_controller|  ; 152 (2)           ; 78 (13)      ; 0                 ; 0          ; 0    ; 0            ; |uart_echo_top|uart_echo:uart_echo_controller                              ; work         ;
+;       |flow_control:flow_ctrl|       ; 4 (4)             ; 1 (1)        ; 0                 ; 0          ; 0    ; 0            ; |uart_echo_top|uart_echo:uart_echo_controller|flow_control:flow_ctrl       ; work         ;
+;       |uart_caesar_cipher:cipher|    ; 54 (54)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |uart_echo_top|uart_echo:uart_echo_controller|uart_caesar_cipher:cipher    ; work         ;
+;       |uart_receiver:receiver|       ; 57 (57)           ; 38 (38)      ; 0                 ; 0          ; 0    ; 0            ; |uart_echo_top|uart_echo:uart_echo_controller|uart_receiver:receiver       ; work         ;
+;       |uart_transmitter:transmitter| ; 35 (35)           ; 26 (26)      ; 0                 ; 0          ; 0    ; 0            ; |uart_echo_top|uart_echo:uart_echo_controller|uart_transmitter:transmitter ; work         ;
++--------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
-Encoding Type:  One-Hot
-+-------------------------------------------------------------------------------+
-; State Machine - |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|state ;
-+-------------+-----------+------------+-------------+------------+-------------+
-; Name        ; state.PAR ; state.BITS ; state.START ; state.IDLE ; state.STOP  ;
-+-------------+-----------+------------+-------------+------------+-------------+
-; state.IDLE  ; 0         ; 0          ; 0           ; 0          ; 0           ;
-; state.START ; 0         ; 0          ; 1           ; 1          ; 0           ;
-; state.BITS  ; 0         ; 1          ; 0           ; 1          ; 0           ;
-; state.PAR   ; 1         ; 0          ; 0           ; 1          ; 0           ;
-; state.STOP  ; 0         ; 0          ; 0           ; 1          ; 1           ;
-+-------------+-----------+------------+-------------+------------+-------------+
-
-
-+---------------------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                          ;
-+----------------------------------------------------+----------------------------------------+
-; Register name                                      ; Reason for Removal                     ;
-+----------------------------------------------------+----------------------------------------+
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[10] ; Stuck at VCC due to stuck port data_in ;
-; uart_caesar:uart_caesar_inst|uartrx:RX|state~9     ; Lost fanout                            ;
-; uart_caesar:uart_caesar_inst|uartrx:RX|state~10    ; Lost fanout                            ;
-; Total Number of Removed Registers = 3              ;                                        ;
-+----------------------------------------------------+----------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                    ;
++------------------------------------------------------------------------------+----------------------------------------+
+; Register name                                                                ; Reason for Removal                     ;
++------------------------------------------------------------------------------+----------------------------------------+
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[10] ; Stuck at VCC due to stuck port data_in ;
+; Total Number of Removed Registers = 1                                        ;                                        ;
++------------------------------------------------------------------------------+----------------------------------------+
 
 
 +------------------------------------------------------+
@@ -272,155 +240,117 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 68    ;
-; Number of registers using Synchronous Clear  ; 13    ;
+; Total registers                              ; 78    ;
+; Number of registers using Synchronous Clear  ; 32    ;
 ; Number of registers using Synchronous Load   ; 0     ;
-; Number of registers using Asynchronous Clear ; 66    ;
+; Number of registers using Asynchronous Clear ; 63    ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 22    ;
+; Number of registers using Clock Enable       ; 43    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
 
-+-------------------------------------------------------------+
-; Inverted Register Statistics                                ;
-+---------------------------------------------------+---------+
-; Inverted Register                                 ; Fan out ;
-+---------------------------------------------------+---------+
-; uart_caesar:uart_caesar_inst|uarttx:TX|tx         ; 2       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[0] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[1] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[2] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[3] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[4] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[5] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[6] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[7] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[8] ; 1       ;
-; uart_caesar:uart_caesar_inst|uarttx:TX|shifter[9] ; 1       ;
-; Total number of inverted registers = 11           ;         ;
-+---------------------------------------------------+---------+
++---------------------------------------------------------------------------------------+
+; Inverted Register Statistics                                                          ;
++-----------------------------------------------------------------------------+---------+
+; Inverted Register                                                           ; Fan out ;
++-----------------------------------------------------------------------------+---------+
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_out_sync     ; 1       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_out_reg      ; 2       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[1] ; 1       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[2] ; 1       ;
+; uart_echo:uart_echo_controller|flow_control:flow_ctrl|allow_reg             ; 2       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[3] ; 1       ;
+; uart_echo:uart_echo_controller|uart_receiver:receiver|rx_stop_bit           ; 2       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[4] ; 1       ;
+; uart_echo:uart_echo_controller|uart_receiver:receiver|rx_prev               ; 6       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[5] ; 1       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[6] ; 1       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[7] ; 1       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[8] ; 1       ;
+; uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[9] ; 1       ;
+; Total number of inverted registers = 14                                     ;         ;
++-----------------------------------------------------------------------------+---------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                           ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                 ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------+
-; 3:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|baud_cnt[3]        ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|baud_cnt[8]        ;
-; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uarttx:TX|bits_left[0]       ;
-; 5:1                ; 4 bits    ; 12 LEs        ; 4 LEs                ; 8 LEs                  ; Yes        ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|bitpos[1]          ;
-; 3:1                ; 9 bits    ; 18 LEs        ; 9 LEs                ; 9 LEs                  ; Yes        ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uarttx:TX|shifter[1]         ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|out_char[7] ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; No         ; |top_uart_caesar|uart_caesar:uart_caesar_inst|caesar_cipher:C1|out_char[0] ;
-; 7:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |top_uart_caesar|uart_caesar:uart_caesar_inst|uartrx:RX|Selector3          ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                           ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                 ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------+
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |uart_echo_top|uart_echo:uart_echo_controller|uart_transmitter:transmitter|bit_counter[3]  ;
+; 4:1                ; 9 bits    ; 18 LEs        ; 0 LEs                ; 18 LEs                 ; Yes        ; |uart_echo_top|uart_echo:uart_echo_controller|uart_transmitter:transmitter|bit_timer[0]    ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |uart_echo_top|uart_echo:uart_echo_controller|uart_receiver:receiver|bit_counter[0]        ;
+; 4:1                ; 9 bits    ; 18 LEs        ; 0 LEs                ; 18 LEs                 ; Yes        ; |uart_echo_top|uart_echo:uart_echo_controller|uart_receiver:receiver|bit_timer[5]          ;
+; 3:1                ; 9 bits    ; 18 LEs        ; 9 LEs                ; 9 LEs                  ; Yes        ; |uart_echo_top|uart_echo:uart_echo_controller|uart_transmitter:transmitter|tx_shift_reg[1] ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; No         ; |uart_echo_top|uart_echo:uart_echo_controller|uart_caesar_cipher:cipher|cipher_data[0]     ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------+
 
 
-+-----------------------------------------------------------+
-; Source assignments for Top-level Entity: |top_uart_caesar ;
-+-------------+---------+------+----------------------------+
-; Assignment  ; Value   ; From ; To                         ;
-+-------------+---------+------+----------------------------+
-; LOCATION    ; Pin_H12 ; -    ; clk                        ;
-; IO_STANDARD ; 1.2-V   ; -    ; reset_n                    ;
-; LOCATION    ; Pin_P11 ; -    ; reset_n                    ;
-; IO_STANDARD ; 2.5-V   ; -    ; UARTrx                     ;
-; LOCATION    ; Pin_M9  ; -    ; UARTrx                     ;
-; IO_STANDARD ; 2.5-V   ; -    ; UARTtx                     ;
-; LOCATION    ; Pin_L9  ; -    ; UARTtx                     ;
-+-------------+---------+------+----------------------------+
++---------------------------------------------------------+
+; Source assignments for Top-level Entity: |uart_echo_top ;
++-------------+---------+------+--------------------------+
+; Assignment  ; Value   ; From ; To                       ;
++-------------+---------+------+--------------------------+
+; LOCATION    ; Pin_H12 ; -    ; system_clock             ;
+; IO_STANDARD ; 1.2-V   ; -    ; reset_button             ;
+; LOCATION    ; Pin_P11 ; -    ; reset_button             ;
+; IO_STANDARD ; 2.5-V   ; -    ; uart_receive_in          ;
+; LOCATION    ; Pin_M9  ; -    ; uart_receive_in          ;
+; IO_STANDARD ; 2.5-V   ; -    ; uart_transmit_out        ;
+; LOCATION    ; Pin_L9  ; -    ; uart_transmit_out        ;
++-------------+---------+------+--------------------------+
 
 
-+---------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst ;
-+----------------+----------+-----------------------------------------------+
-; Parameter Name ; Value    ; Type                                          ;
-+----------------+----------+-----------------------------------------------+
-; CLK_FREQ       ; 50000000 ; Signed Integer                                ;
-; BAUD           ; 115200   ; Signed Integer                                ;
-; SHIFT          ; 3        ; Signed Integer                                ;
-+----------------+----------+-----------------------------------------------+
++-----------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: uart_echo:uart_echo_controller ;
++----------------+----------+-------------------------------------------------+
+; Parameter Name ; Value    ; Type                                            ;
++----------------+----------+-------------------------------------------------+
+; CLK_FREQ       ; 50000000 ; Signed Integer                                  ;
+; BAUD_RATE      ; 115200   ; Signed Integer                                  ;
++----------------+----------+-------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+-------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst|uartrx:RX ;
-+----------------+----------+---------------------------------------------------------+
-; Parameter Name ; Value    ; Type                                                    ;
-+----------------+----------+---------------------------------------------------------+
-; CLK_FREQ       ; 50000000 ; Signed Integer                                          ;
-; BAUD           ; 115200   ; Signed Integer                                          ;
-+----------------+----------+---------------------------------------------------------+
++----------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: uart_echo:uart_echo_controller|uart_receiver:receiver ;
++----------------+----------+------------------------------------------------------------------------+
+; Parameter Name ; Value    ; Type                                                                   ;
++----------------+----------+------------------------------------------------------------------------+
+; CLK_FREQ       ; 50000000 ; Signed Integer                                                         ;
+; BAUD_RATE      ; 115200   ; Signed Integer                                                         ;
++----------------+----------+------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+--------------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst|caesar_cipher:C1 ;
-+----------------+-------+-------------------------------------------------------------------+
-; Parameter Name ; Value ; Type                                                              ;
-+----------------+-------+-------------------------------------------------------------------+
-; SHIFT          ; 3     ; Signed Integer                                                    ;
-+----------------+-------+-------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: uart_echo:uart_echo_controller|uart_transmitter:transmitter ;
++----------------+----------+------------------------------------------------------------------------------+
+; Parameter Name ; Value    ; Type                                                                         ;
++----------------+----------+------------------------------------------------------------------------------+
+; CLK_FREQ       ; 50000000 ; Signed Integer                                                               ;
+; BAUD_RATE      ; 115200   ; Signed Integer                                                               ;
++----------------+----------+------------------------------------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
-+-------------------------------------------------------------------------------------+
-; Parameter Settings for User Entity Instance: uart_caesar:uart_caesar_inst|uarttx:TX ;
-+----------------+----------+---------------------------------------------------------+
-; Parameter Name ; Value    ; Type                                                    ;
-+----------------+----------+---------------------------------------------------------+
-; CLK_FREQ       ; 50000000 ; Signed Integer                                          ;
-; BAUD           ; 115200   ; Signed Integer                                          ;
-+----------------+----------+---------------------------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
++-------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "uart_echo:uart_echo_controller|uart_transmitter:transmitter"                           ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+; Port    ; Type   ; Severity ; Details                                                                             ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
+; tx_done ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++---------+--------+----------+-------------------------------------------------------------------------------------+
 
 
-+----------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for Inferred Entity Instance: uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0 ;
-+------------------------+----------------+----------------------------------------------------------------------+
-; Parameter Name         ; Value          ; Type                                                                 ;
-+------------------------+----------------+----------------------------------------------------------------------+
-; LPM_WIDTHN             ; 32             ; Untyped                                                              ;
-; LPM_WIDTHD             ; 5              ; Untyped                                                              ;
-; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                                              ;
-; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                                              ;
-; LPM_PIPELINE           ; 0              ; Untyped                                                              ;
-; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                                              ;
-; MAXIMIZE_SPEED         ; 5              ; Untyped                                                              ;
-; CBXI_PARAMETER         ; lpm_divide_m3m ; Untyped                                                              ;
-; CARRY_CHAIN            ; MANUAL         ; Untyped                                                              ;
-; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                                              ;
-; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                                           ;
-; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                                         ;
-; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                                         ;
-; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                                       ;
-+------------------------+----------------+----------------------------------------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
-
-
-+----------------------------------------------------------------------------------------------------------------+
-; Parameter Settings for Inferred Entity Instance: uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod1 ;
-+------------------------+----------------+----------------------------------------------------------------------+
-; Parameter Name         ; Value          ; Type                                                                 ;
-+------------------------+----------------+----------------------------------------------------------------------+
-; LPM_WIDTHN             ; 32             ; Untyped                                                              ;
-; LPM_WIDTHD             ; 5              ; Untyped                                                              ;
-; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                                              ;
-; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                                              ;
-; LPM_PIPELINE           ; 0              ; Untyped                                                              ;
-; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                                              ;
-; MAXIMIZE_SPEED         ; 5              ; Untyped                                                              ;
-; CBXI_PARAMETER         ; lpm_divide_m3m ; Untyped                                                              ;
-; CARRY_CHAIN            ; MANUAL         ; Untyped                                                              ;
-; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                                              ;
-; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                                           ;
-; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                                         ;
-; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                                         ;
-; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                                       ;
-+------------------------+----------------+----------------------------------------------------------------------+
-Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
++--------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "uart_echo:uart_echo_controller|uart_receiver:receiver"                                  ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; Port     ; Type   ; Severity ; Details                                                                             ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
+; rx_error ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++----------+--------+----------+-------------------------------------------------------------------------------------+
 
 
 +-------------------------------+
@@ -436,11 +366,17 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; Analysis & Synthesis Messages ;
 +-------------------------------+
 Info: *******************************************************************
-Info: Running Quartus II 64-Bit Analysis & Synthesis
+Info: Running Quartus II 32-bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Sun Nov 30 23:18:22 2025
+    Info: Processing started: Sat Dec 06 02:11:13 2025
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off lr3 -c lr3
 Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 1 design units, including 1 entities, in source file uart_caesar_cipher.sv
+    Info (12023): Found entity 1: uart_caesar_cipher
+Info (12021): Found 1 design units, including 1 entities, in source file flow_control.sv
+    Info (12023): Found entity 1: flow_control
+Info (12021): Found 1 design units, including 1 entities, in source file uart_echo.sv
+    Info (12023): Found entity 1: uart_echo
 Info (12021): Found 1 design units, including 1 entities, in source file uartrx.sv
     Info (12023): Found entity 1: uartrx
 Info (12021): Found 1 design units, including 1 entities, in source file uarttx.sv
@@ -459,55 +395,44 @@ Info (12021): Found 1 design units, including 1 entities, in source file tb_uart
     Info (12023): Found entity 1: tb_uart_caesar
 Info (12021): Found 1 design units, including 1 entities, in source file top_uart_caesar.sv
     Info (12023): Found entity 1: top_uart_caesar
-Info (12127): Elaborating entity "top_uart_caesar" for the top level hierarchy
-Info (12128): Elaborating entity "uart_caesar" for hierarchy "uart_caesar:uart_caesar_inst"
-Warning (10036): Verilog HDL or VHDL warning at uart_caesar.sv(30): object "tx_start" assigned a value but never read
-Info (12128): Elaborating entity "uartrx" for hierarchy "uart_caesar:uart_caesar_inst|uartrx:RX"
-Warning (10230): Verilog HDL assignment warning at uartrx.sv(41): truncated value with size 32 to match size of target (9)
-Warning (10230): Verilog HDL assignment warning at uartrx.sv(49): truncated value with size 32 to match size of target (9)
-Warning (10230): Verilog HDL assignment warning at uartrx.sv(107): truncated value with size 32 to match size of target (4)
-Info (12128): Elaborating entity "caesar_cipher" for hierarchy "uart_caesar:uart_caesar_inst|caesar_cipher:C1"
-Warning (10230): Verilog HDL assignment warning at caesar_cipher.sv(19): truncated value with size 32 to match size of target (8)
-Warning (10230): Verilog HDL assignment warning at caesar_cipher.sv(24): truncated value with size 32 to match size of target (8)
-Info (12128): Elaborating entity "uarttx" for hierarchy "uart_caesar:uart_caesar_inst|uarttx:TX"
-Warning (10230): Verilog HDL assignment warning at uarttx.sv(35): truncated value with size 32 to match size of target (9)
-Warning (10230): Verilog HDL assignment warning at uarttx.sv(78): truncated value with size 32 to match size of target (4)
+Info (12021): Found 1 design units, including 1 entities, in source file uart_receiver.sv
+    Info (12023): Found entity 1: uart_receiver
+Info (12021): Found 1 design units, including 1 entities, in source file uart_transmitter.sv
+    Info (12023): Found entity 1: uart_transmitter
+Info (12021): Found 1 design units, including 1 entities, in source file uart_echo_top.sv
+    Info (12023): Found entity 1: uart_echo_top
+Info (12127): Elaborating entity "uart_echo_top" for the top level hierarchy
+Info (12128): Elaborating entity "uart_echo" for hierarchy "uart_echo:uart_echo_controller"
+Info (12128): Elaborating entity "uart_receiver" for hierarchy "uart_echo:uart_echo_controller|uart_receiver:receiver"
+Warning (10230): Verilog HDL assignment warning at uart_receiver.sv(100): truncated value with size 32 to match size of target (9)
+Warning (10230): Verilog HDL assignment warning at uart_receiver.sv(174): truncated value with size 32 to match size of target (4)
+Info (12128): Elaborating entity "flow_control" for hierarchy "uart_echo:uart_echo_controller|flow_control:flow_ctrl"
+Info (12128): Elaborating entity "uart_caesar_cipher" for hierarchy "uart_echo:uart_echo_controller|uart_caesar_cipher:cipher"
+Warning (10230): Verilog HDL assignment warning at uart_caesar_cipher.sv(11): truncated value with size 32 to match size of target (8)
+Warning (10230): Verilog HDL assignment warning at uart_caesar_cipher.sv(13): truncated value with size 32 to match size of target (8)
+Info (12128): Elaborating entity "uart_transmitter" for hierarchy "uart_echo:uart_echo_controller|uart_transmitter:transmitter"
+Warning (10230): Verilog HDL assignment warning at uart_transmitter.sv(82): truncated value with size 32 to match size of target (9)
+Warning (10230): Verilog HDL assignment warning at uart_transmitter.sv(87): truncated value with size 32 to match size of target (4)
 Info (13014): Ignored 3 buffer(s)
     Info (13019): Ignored 3 SOFT buffer(s)
-Info (278001): Inferred 2 megafunctions from design logic
-    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "uart_caesar:uart_caesar_inst|caesar_cipher:C1|Mod0"
-    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "uart_caesar:uart_caesar_inst|caesar_cipher:C1|Mod1"
-Info (12130): Elaborated megafunction instantiation "uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0"
-Info (12133): Instantiated megafunction "uart_caesar:uart_caesar_inst|caesar_cipher:C1|lpm_divide:Mod0" with the following parameter:
-    Info (12134): Parameter "LPM_WIDTHN" = "32"
-    Info (12134): Parameter "LPM_WIDTHD" = "5"
-    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
-    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
-Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_m3m.tdf
-    Info (12023): Found entity 1: lpm_divide_m3m
-Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_plh.tdf
-    Info (12023): Found entity 1: sign_div_unsign_plh
-Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_ove.tdf
-    Info (12023): Found entity 1: alt_u_div_ove
 Info (286030): Timing-Driven Synthesis is running
-Info (17049): 2 registers lost all their fanouts during netlist optimizations.
-Info (144001): Generated suppressed messages file D:/study/vhdl/lr3/output_files/lr3.map.smsg
+Info (144001): Generated suppressed messages file C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/output_files/lr3.map.smsg
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 390 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 177 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 3 input pins
     Info (21059): Implemented 1 output pins
-    Info (21061): Implemented 386 logic cells
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 9 warnings
-    Info: Peak virtual memory: 4661 megabytes
-    Info: Processing ended: Sun Nov 30 23:18:24 2025
+    Info (21061): Implemented 173 logic cells
+Info: Quartus II 32-bit Analysis & Synthesis was successful. 0 errors, 7 warnings
+    Info: Peak virtual memory: 396 megabytes
+    Info: Processing ended: Sat Dec 06 02:11:15 2025
     Info: Elapsed time: 00:00:02
-    Info: Total CPU time (on all processors): 00:00:02
+    Info: Total CPU time (on all processors): 00:00:01
 
 
 +------------------------------------------+
 ; Analysis & Synthesis Suppressed Messages ;
 +------------------------------------------+
-The suppressed messages can be found in D:/study/vhdl/lr3/output_files/lr3.map.smsg.
+The suppressed messages can be found in C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/output_files/lr3.map.smsg.
 
 

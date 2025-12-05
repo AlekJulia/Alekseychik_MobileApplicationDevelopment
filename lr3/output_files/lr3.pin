@@ -71,7 +71,7 @@
  -- Pin directions (input, output or bidir) are based on device operating in user mode.
  ---------------------------------------------------------------------------------
 
-Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+Quartus II 32-bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 CHIP  "lr3"  ASSIGNED TO AN: 5CGXFC5C6F27C7
 
 Pin Name/Usage               : Location  : Dir.   : I/O Standard      : Voltage : I/O Bank  : User Assignment
@@ -421,7 +421,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : H8        :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : H9        :        :                   :         : 8A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : H10       :        :                   :         : 8A        :                
 VCCIO7A                      : H11       : power  :                   : 2.5V    : 7A        :                
-clk                          : H12       : input  : 2.5 V             :         : 7A        : Y              
+system_clock                 : H12       : input  : 2.5 V             :         : 7A        : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : H13       :        :                   :         : 7A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : H14       :        :                   :         : 7A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : H15       :        :                   :         : 7A        :                
@@ -496,7 +496,7 @@ NC                           : L5        :        :                   :         
 MSEL1                        : L6        : input  :                   :         : 9A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : L7        :        :                   :         : 8A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : L8        :        :                   :         : 8A        :                
-UARTtx                       : L9        : output : 2.5 V             :         : 8A        : Y              
+uart_transmit_out            : L9        : output : 2.5 V             :         : 8A        : Y              
 GND                          : L10       : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : L11       :        :                   :         : 7A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : L12       :        :                   :         : 7A        :                
@@ -522,7 +522,7 @@ GND                          : M5        : gnd    :                   :         
 NC                           : M6        :        :                   :         :           :                
 MSEL0                        : M7        : input  :                   :         : 9A        :                
 GND                          : M8        : gnd    :                   :         :           :                
-UARTrx                       : M9        : input  : 2.5 V             :         : 8A        : Y              
+uart_receive_in              : M9        : input  : 2.5 V             :         : 8A        : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : M10       :        :                   :         : 8A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : M11       :        :                   :         : 7A        :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : M12       :        :                   :         : 7A        :                
@@ -576,7 +576,7 @@ GND                          : P7        : gnd    :                   :         
 RESERVED_INPUT_WITH_WEAK_PULLUP : P8        :        :                   :         : 3A        :                
 GND                          : P9        : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : P10       :        :                   :         : 3B        :                
-reset_n                      : P11       : input  : 1.2 V             :         : 3B        : Y              
+reset_button                 : P11       : input  : 1.2 V             :         : 3B        : Y              
 RESERVED_INPUT_WITH_WEAK_PULLUP : P12       :        :                   :         : 3B        :                
 GND                          : P13       : gnd    :                   :         :           :                
 VCC                          : P14       : power  :                   : 1.1V    :           :                

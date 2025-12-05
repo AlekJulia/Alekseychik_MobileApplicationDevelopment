@@ -1,0 +1,46 @@
+// Модуль управления потоком XON/XOFF
+module flow_control (
+    input  logic clk,
+    input  logic reset_n,          // активный низкий
+    input  logic [7:0] rx_data,    // принятые данные
+    input  logic rx_valid,         // флаг валидности данных
+    output logic allow_transmit,   // 1 = можно отправлять, 0 = стоп (XOFF)
+    output logic is_control_char   // 1 = это XON/XOFF, 0 = обычные данные
+);
+
+    // Внутренний регистр для хранения состояния
+    reg allow_reg;
+    
+    always_ff @(posedge clk or negedge reset_n) begin
+        if (!reset_n) begin
+            // При сбросе разрешаем передачу (по умолчанию XON)
+            allow_reg <= 1'b1;
+            is_control_char <= 1'b0;
+        end else if (rx_valid) begin
+            // Когда пришли новые данные
+            case (rx_data)
+                8'h11: begin  // XON (Ctrl+Q)
+                    allow_reg <= 1'b1;      // разрешаем передачу
+                    is_control_char <= 1'b1; // это управляющий символ
+                end
+                
+                8'h13: begin  // XOFF (Ctrl+S)  
+                    allow_reg <= 1'b0;      // запрещаем передачу
+                    is_control_char <= 1'b1; // это управляющий символ
+                end
+                
+                default: begin
+                    // Обычные данные - не меняем флаг разрешения
+                    allow_reg <= allow_reg; // сохраняем текущее состояние
+                    is_control_char <= 1'b0; // не управляющий символ
+                end
+            endcase
+        end else begin
+            // Если нет новых данных - сохраняем состояние
+            is_control_char <= 1'b0;
+        end
+    end
+    
+    assign allow_transmit = allow_reg;
+
+endmodule

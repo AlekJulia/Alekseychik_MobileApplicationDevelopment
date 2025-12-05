@@ -1,0 +1,32 @@
+// Модуль шифра Цезаря (сдвиг на 3 позиции)
+module uart_caesar_cipher (
+    input  logic [7:0] plain_data,  // исходные данные
+    output logic [7:0] cipher_data  // зашифрованные данные
+);
+    
+    // Шифр Цезаря: сдвиг на 3 позиции вперёд
+    // Для букв A-Z, a-z, остальные символы не меняем
+    
+    always_comb begin
+        // Проверяем диапазоны символов
+        if (plain_data >= 8'h41 && plain_data <= 8'h5A) begin
+            // Большие буквы A-Z (65-90)
+            if (plain_data <= 8'h5A - 3) begin
+                cipher_data = plain_data + 3;  // обычный сдвиг
+            end else begin
+                cipher_data = plain_data - 23; // зацикливание X→A, Y→B, Z→C
+            end
+        end else if (plain_data >= 8'h61 && plain_data <= 8'h7A) begin
+            // Маленькие буквы a-z (97-122)
+            if (plain_data <= 8'h7A - 3) begin
+                cipher_data = plain_data + 3;  // обычный сдвиг
+            end else begin
+                cipher_data = plain_data - 23; // зацикливание x→a, y→b, z→c
+            end
+        end else begin
+            // Не буквы - оставляем как есть (цифры, пробелы, XON/XOFF и т.д.)
+            cipher_data = plain_data;
+        end
+    end
+
+endmodule

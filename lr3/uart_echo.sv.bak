@@ -1,0 +1,75 @@
+// модуль для объединения приёмника и передатчика, отправляет всё, что пришло обратно
+module uart_echo #(
+    parameter CLK_FREQ = 50_000_000,
+    parameter BAUD_RATE = 115200
+)(
+    input  logic clk,
+    input  logic reset,
+    input  logic uart_rx, // приём данных
+    output logic uart_tx // передача данных
+);
+    // сигналы приёмника
+    logic [7:0] received_data;
+    logic data_valid;
+    logic rx_error;
+    
+    // сигналы передатчика
+    logic tx_busy;
+    logic tx_done;
+    
+    // управление передачей
+    logic start_transmission; // начало передачи
+    logic data_valid_prev; // предыдущее значение
+    
+    // ----------------------------------------------------------
+    // экземпляр приёмника
+    // ----------------------------------------------------------
+    uart_receiver #(
+        .CLK_FREQ(CLK_FREQ),
+        .BAUD_RATE(BAUD_RATE)
+    ) receiver (
+        .clk(clk),
+        .reset(reset),
+        .rx_in(uart_rx),
+        .rx_data(received_data),
+        .rx_valid(data_valid),
+        .rx_error(rx_error)
+    );
+    
+    // ----------------------------------------------------------
+    // экземпляр передатчика
+    // ----------------------------------------------------------
+    uart_transmitter #(
+        .CLK_FREQ(CLK_FREQ),
+        .BAUD_RATE(BAUD_RATE)
+    ) transmitter (
+        .clk(clk),
+        .reset(reset),
+        .tx_start(start_transmission),
+        .tx_data(received_data),
+        .tx_out(uart_tx),
+        .tx_busy(tx_busy),
+        .tx_done(tx_done)
+    );
+    
+    // ----------------------------------------------------------
+    // логика эхо (передача полученного символа обратно)
+    // ----------------------------------------------------------
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin // сброс
+            data_valid_prev <= 1'b0;
+            start_transmission <= 1'b0;
+        end else begin
+            // запоминаем значение корректности данных (чтобы обнаружить изменение и понять когда начать передачу)
+            data_valid_prev <= data_valid; // data_valid  = 1 только один такт, когда пакет пришёл полностью
+            
+            // сигнал старта передачи 1, до данных не было !0, передатчик не занят !0
+            if (data_valid && !data_valid_prev && !tx_busy) begin
+                start_transmission <= 1'b1; // начало передачи
+            end else begin
+                start_transmission <= 1'b0; // иначе конец передачи
+            end
+        end
+    end
+
+endmodule

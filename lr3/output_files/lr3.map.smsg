@@ -1,1 +1,2 @@
 Warning (10268): Verilog HDL information at uarttx.sv(59): always construct contains both blocking and non-blocking assignments
+Warning (10268): Verilog HDL information at uart_transmitter.sv(53): always construct contains both blocking and non-blocking assignments

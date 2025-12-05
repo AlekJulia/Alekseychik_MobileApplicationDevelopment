@@ -5,8 +5,10 @@ if {[file exists rtl_work]} {
 vlib rtl_work
 vmap work rtl_work
 
-vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/uartrx.sv}
-vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/uarttx.sv}
-vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/caesar_cipher.sv}
-vlog -sv -work work +incdir+D:/study/vhdl/lr3 {D:/study/vhdl/lr3/uart_caesar.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar_cipher.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/flow_control.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_receiver.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_transmitter.sv}
+vlog -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 {C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo_top.sv}
 

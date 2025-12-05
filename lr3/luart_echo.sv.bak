@@ -1,0 +1,82 @@
+// uart_echo.sv — Эхо-контроллер (принимает и сразу отправляет обратно)
+module uart_echo #(
+    parameter CLK_FREQ = 50_000_000,
+    parameter BAUD_RATE = 115200
+)(
+    input  logic clk,
+    input  logic reset_n,      // Сброс (активный 0)
+    input  logic uart_rx,      // Приём данных
+    output logic uart_tx       // Передача данных
+);
+
+    // Преобразование активного уровня сброса
+    logic reset;
+    assign reset = ~reset_n;
+    
+    // Сигналы приёмника
+    logic [7:0] received_data;
+    logic data_valid;
+    logic rx_error;
+    
+    // Сигналы передатчика
+    logic tx_busy;
+    logic tx_done;
+    
+    // Управление передачей
+    logic start_transmission;
+    logic data_valid_prev;
+    
+    // ----------------------------------------------------------
+    // 1. Экземпляр приёмника
+    // ----------------------------------------------------------
+    uart_receiver #(
+        .CLK_FREQ(CLK_FREQ),
+        .BAUD_RATE(BAUD_RATE)
+    ) receiver (
+        .clk(clk),
+        .reset(reset),
+        .rx_in(uart_rx),
+        .rx_data(received_data),
+        .rx_valid(data_valid),
+        .rx_error(rx_error)
+    );
+    
+    // ----------------------------------------------------------
+    // 2. Экземпляр передатчика
+    // ----------------------------------------------------------
+    uart_transmitter #(
+        .CLK_FREQ(CLK_FREQ),
+        .BAUD_RATE(BAUD_RATE)
+    ) transmitter (
+        .clk(clk),
+        .reset(reset),
+        .tx_start(start_transmission),
+        .tx_data(received_data),
+        .tx_out(uart_tx),
+        .tx_busy(tx_busy),
+        .tx_done(tx_done)
+    );
+    
+    // ----------------------------------------------------------
+    // 3. Логика эхо (запуск передачи при получении данных)
+    // ----------------------------------------------------------
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            data_valid_prev <= 1'b0;
+            start_transmission <= 1'b0;
+        end else begin
+            // Запоминаем предыдущее значение флага валидности
+            data_valid_prev <= data_valid;
+            
+            // Формируем импульс старта передачи:
+            // Когда данные стали валидными (фронт data_valid)
+            // И передатчик свободен
+            if (data_valid && !data_valid_prev && !tx_busy) begin
+                start_transmission <= 1'b1;
+            end else begin
+                start_transmission <= 1'b0;
+            end
+        end
+    end
+
+endmodule

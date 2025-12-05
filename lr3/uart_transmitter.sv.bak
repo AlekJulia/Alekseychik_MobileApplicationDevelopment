@@ -1,0 +1,105 @@
+// uart_transmitter.sv — UART передатчик без конечного автомата
+module uart_transmitter #(
+    parameter CLK_FREQ = 50_000_000,  // 50 МГц
+    parameter BAUD_RATE = 115200      // 115.2 кбит/с
+)(
+    input  logic clk,                 // Тактовый сигнал
+    input  logic reset,               // Сброс (активный уровень 1)
+    input  logic tx_start,            // Сигнал начала передачи (минимум 1 такт)
+    input  logic [7:0] tx_data,       // Данные для передачи (8 бит)
+    output logic tx_out,              // Выходной последовательный сигнал
+    output logic tx_busy,             // Флаг занятости (1 = передаёт)
+    output logic tx_done              // Импульс завершения передачи (1 такт)
+);
+
+    // ----------------------------------------------------------
+    // Параметры и внутренние сигналы
+    // ----------------------------------------------------------
+    localparam integer TICKS_PER_BIT = CLK_FREQ / BAUD_RATE;
+    localparam integer CNT_WIDTH = $clog2(TICKS_PER_BIT);
+    
+    // Счётчики
+    logic [CNT_WIDTH-1:0] bit_timer;
+    logic [3:0] bit_counter;
+    
+    // Регистры данных
+    logic [10:0] tx_shift_reg;       // Сдвиговый регистр: [стоп, чётность, данные, старт]
+    logic tx_parity_bit;             // Вычисленный бит чётности
+    
+    // Флаги и управление
+    logic transmitting;              // Идёт передача (1 = да)
+    logic tx_start_detected;         // Обнаружен фронт сигнала старта
+    logic tx_start_prev;             // Предыдущее значение tx_start
+    
+    // ----------------------------------------------------------
+    // 1. Детектор фронта сигнала старта
+    // ----------------------------------------------------------
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            tx_start_prev <= 1'b0;
+        end else begin
+            tx_start_prev <= tx_start;
+        end
+    end
+    
+    assign tx_start_detected = tx_start && !tx_start_prev;
+    
+    // ----------------------------------------------------------
+    // 2. Управление передачей
+    // ----------------------------------------------------------
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            transmitting <= 1'b0;
+            tx_busy <= 1'b0;
+            tx_done <= 1'b0;
+            bit_timer <= '0;
+            bit_counter <= '0;
+            tx_out <= 1'b1;           // В состоянии покоя линия = 1
+            tx_shift_reg <= 11'b11111111111;  // Все 1 (стоп-биты)
+        end else begin
+            // Сброс импульса завершения
+            tx_done <= 1'b0;
+            
+            // Если обнаружен старт передачи и передатчик свободен
+            if (tx_start_detected && !transmitting) begin
+                transmitting <= 1'b1;
+                tx_busy <= 1'b1;
+                bit_timer <= '0;
+                bit_counter <= 4'd0;
+                
+                // Вычисляем бит чётности (чётная чётность)
+                tx_parity_bit = ^tx_data;  // XOR всех битов данных
+                
+                // Формируем кадр: [1 (стоп), чётность, данные[7:0], 0 (старт)]
+                // Но передавать будем с младшего бита (старт-бит первым)
+                tx_shift_reg <= {1'b1, tx_parity_bit, tx_data, 1'b0};
+                tx_out <= 1'b0;  // Начинаем со старт-бита (0)
+            end
+            
+            // Если идёт передача
+            if (transmitting) begin
+                bit_timer <= bit_timer + 1;
+                
+                // Достигли конца текущего бита
+                if (bit_timer == TICKS_PER_BIT - 1) begin
+                    bit_timer <= '0;
+                    bit_counter <= bit_counter + 1;
+                    
+                    // Переходим к следующему биту
+                    if (bit_counter < 4'd10) begin
+                        // Сдвигаем регистр и отправляем следующий бит
+                        tx_shift_reg <= {1'b1, tx_shift_reg[10:1]};
+                        tx_out <= tx_shift_reg[1];  // Следующий бит
+                    end else begin
+                        // Передали все 11 бит
+                        transmitting <= 1'b0;
+                        tx_busy <= 1'b0;
+                        tx_done <= 1'b1;          // Импульс завершения
+                        tx_out <= 1'b1;           // Возвращаем линию в 1
+                    end
+                end
+            end
+        end
+    end
+
+endmodule

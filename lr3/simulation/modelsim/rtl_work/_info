@@ -2,118 +2,142 @@ m255
 K3
 13
 cModel Technology
-Z0 dD:\study\vhdl\lr3\simulation\modelsim
-vcaesar_cipher
+Z0 dC:\Users\Ula\Documents\GitHub\Alekseychik_MobileApplicationDevelopment\lr3\simulation\modelsim
+vflow_control
 Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
-Z2 IDTSlImiA2m<eW1Fd1USPb0
-Z3 VNB:fk:>d]7gc49I7zHdG;0
+I^N:WKYK1gLNEbMg]m>zXi2
+VX:I<dPYQ<EG7P^nFP3iHe0
 S1
-Z4 dD:\study\vhdl\lr3\simulation\modelsim
-Z5 w1764516402
-Z6 8D:/study/vhdl/lr3/caesar_cipher.sv
-Z7 FD:/study/vhdl/lr3/caesar_cipher.sv
-L0 6
-Z8 OV;L;10.1d;51
+Z2 dC:\Users\Ula\Documents\GitHub\Alekseychik_MobileApplicationDevelopment\lr3\simulation\modelsim
+w1764949251
+8C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/flow_control.sv
+FC:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/flow_control.sv
+L0 1
+Z3 OV;L;10.1d;51
 r1
 31
-Z9 o-sv -work work -O0
-Z10 !s92 -sv -work work +incdir+D:/study/vhdl/lr3 -O0
-Z11 !s100 F3@AX0GQHmnbMVY@bRH>C1
-Z12 !s105 caesar_cipher_sv_unit
-Z13 !s108 1764517414.365000
-Z14 !s107 D:/study/vhdl/lr3/caesar_cipher.sv|
-Z15 !s90 -reportprogress|300|-sv|-work|work|+incdir+D:/study/vhdl/lr3|D:/study/vhdl/lr3/caesar_cipher.sv|
+Z4 o-sv -work work -O0
+Z5 !s92 -sv -work work +incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3 -O0
 !i10b 1
+!s100 ^I]38M[:h?eHHXN97HUcP1
+!s105 flow_control_sv_unit
 !s85 0
+!s108 1764951679.338000
+!s107 C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/flow_control.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3|C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/flow_control.sv|
 !s101 -O0
-vtb_uart_caesar
+vuart_caesar_cipher
+R1
+IY]gX@XKi[[CBWOO^iimke2
+VhA0?oDb_z48Z_;K;l2Mg51
+S1
+R2
+w1764951490
+8C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar_cipher.sv
+FC:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar_cipher.sv
+L0 1
+R3
+r1
+31
+R4
+R5
+!i10b 1
+!s100 0HkT?I[Mk5<Vbeldgg5E40
+!s105 uart_caesar_cipher_sv_unit
+!s85 0
+!s108 1764951679.289000
+!s107 C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar_cipher.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3|C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_caesar_cipher.sv|
+!s101 -O0
+vuart_echo
+R1
+IJ@4k55NG>_Dk8S2[OnX0R1
+VK9LbmXJ<Y60TPK;Df3nFG3
+S1
+R2
+w1764951501
+8C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo.sv
+FC:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo.sv
+L0 1
+R3
+r1
+31
+R4
+R5
+!i10b 1
+!s100 X@aMi4BAo^?C]2P@;E:1d3
+!s105 uart_echo_sv_unit
+!s85 0
+!s108 1764951679.370000
+!s107 C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3|C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo.sv|
+!s101 -O0
+vuart_echo_top
 R1
 !i10b 1
-!s100 4XT[>]OAl;HGFX@j7Z;Kf3
-ICXKXAa`JLbeBk0V[o7]QO3
-Z16 V6PhXJn9K[ojUXglXCC@SR2
-Z17 !s105 tb_uart_caesar_sv_unit
+!s100 V`Zhj883L8BQCIZH5GI1V0
+Ika8?dlZ0ADV6T^`nUaIK>1
+VZkV3ER<iJ?fah6Lb;oVB;0
+!s105 uart_echo_top_sv_unit
 S1
-R4
-w1764519022
-Z18 8D:\study\vhdl\lr3/tb_uart_caesar.sv
-Z19 FD:\study\vhdl\lr3/tb_uart_caesar.sv
-L0 3
-R8
+R2
+w1764940807
+8C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo_top.sv
+FC:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo_top.sv
+L0 14
+R3
 r1
 !s85 0
 31
-!s108 1764519043.310000
-!s107 D:\study\vhdl\lr3/tb_uart_caesar.sv|
-Z20 !s90 -reportprogress|300|-sv|D:\study\vhdl\lr3/tb_uart_caesar.sv|
+!s108 1764951679.483000
+!s107 C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo_top.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3|C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_echo_top.sv|
 !s101 -O0
-Z21 o-sv -O0
-vuart_caesar
-R1
-Z22 IFhGZch[=CeJ`zZlP8fBP62
-Z23 VohjjYdJb4AD;g;U>6O?Cg2
-S1
 R4
-Z24 w1764517251
-Z25 8D:/study/vhdl/lr3/uart_caesar.sv
-Z26 FD:/study/vhdl/lr3/uart_caesar.sv
-L0 5
-R8
-r1
-31
-R9
-R10
-Z27 !s100 @nMR;B:>amGJ7e0fT<=3V0
-Z28 !s105 uart_caesar_sv_unit
-Z29 !s108 1764517414.447000
-Z30 !s107 D:/study/vhdl/lr3/uart_caesar.sv|
-Z31 !s90 -reportprogress|300|-sv|-work|work|+incdir+D:/study/vhdl/lr3|D:/study/vhdl/lr3/uart_caesar.sv|
-!i10b 1
-!s85 0
-!s101 -O0
-vuartrx
+R5
+vuart_receiver
 R1
-Z32 IH`_VXK14>kROSj=JG_`_T1
-Z33 V823i<ULJgTDDT]kgMNOiD0
+IP5]efF:]I33cU<ShJboHi2
+VBRLl6<>73Joz<PhU>:0fb1
 S1
-R4
-Z34 w1764498316
-Z35 8D:/study/vhdl/lr3/uartrx.sv
-Z36 FD:/study/vhdl/lr3/uartrx.sv
+R2
+w1764941172
+8C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_receiver.sv
+FC:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_receiver.sv
 L0 2
-R8
+R3
 r1
 31
-R9
-R10
-Z37 !s100 1k;ALAGgQal^e_TUcmPBB2
-Z38 !s105 uartrx_sv_unit
-Z39 !s108 1764517414.185000
-Z40 !s107 D:/study/vhdl/lr3/uartrx.sv|
-Z41 !s90 -reportprogress|300|-sv|-work|work|+incdir+D:/study/vhdl/lr3|D:/study/vhdl/lr3/uartrx.sv|
-!i10b 1
-!s85 0
-!s101 -O0
-vuarttx
-R1
-Z42 IzES<5=?UDlMEh9lBh_EE60
-Z43 VU<V696Fm3j3ASMY7njOi62
-S1
 R4
-Z44 w1764498330
-Z45 8D:/study/vhdl/lr3/uarttx.sv
-Z46 FD:/study/vhdl/lr3/uarttx.sv
+R5
+!i10b 1
+!s100 jON9jH;DPF:ac6>21;Kg<3
+!s105 uart_receiver_sv_unit
+!s85 0
+!s108 1764951679.402000
+!s107 C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_receiver.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3|C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_receiver.sv|
+!s101 -O0
+vuart_transmitter
+R1
+IOb^W=>gHOf35j3[HL=^Ll3
+V7^?di`7G8f5;LD;k>6=dU2
+S1
+R2
+w1764941155
+8C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_transmitter.sv
+FC:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_transmitter.sv
 L0 2
-R8
+R3
 r1
 31
-R9
-R10
-Z47 !s100 LLgeOMAgAb`5<eTVHhoEK3
-Z48 !s105 uarttx_sv_unit
-Z49 !s108 1764517414.289000
-Z50 !s107 D:/study/vhdl/lr3/uarttx.sv|
-Z51 !s90 -reportprogress|300|-sv|-work|work|+incdir+D:/study/vhdl/lr3|D:/study/vhdl/lr3/uarttx.sv|
+R4
+R5
 !i10b 1
+!s100 gmh@>;1njdTaX43N59FbG3
+!s105 uart_transmitter_sv_unit
 !s85 0
+!s108 1764951679.434000
+!s107 C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_transmitter.sv|
+!s90 -reportprogress|300|-sv|-work|work|+incdir+C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3|C:/Users/Ula/Documents/GitHub/Alekseychik_MobileApplicationDevelopment/lr3/uart_transmitter.sv|
 !s101 -O0

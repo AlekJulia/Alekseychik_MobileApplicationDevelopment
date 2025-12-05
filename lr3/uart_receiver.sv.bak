@@ -1,0 +1,200 @@
+// uart_receiver.sv — UART приёмник без конечного автомата
+// Параметры: CLK_FREQ - частота тактового сигнала (Гц), BAUD_RATE - скорость передачи (бит/с)
+module uart_receiver #(
+    parameter CLK_FREQ = 50_000_000,  // 50 МГц
+    parameter BAUD_RATE = 115200      // 115.2 кбит/с
+)(
+    input  logic clk,                 // Тактовый сигнал
+    input  logic reset,               // Сброс (активный уровень 1)
+    input  logic rx_in,               // Входной последовательный сигнал
+    output logic [7:0] rx_data,       // Принятые данные (8 бит)
+    output logic rx_valid,            // Флаг валидности данных (1 такт)
+    output logic rx_error             // Флаг ошибки (чётность или стоп-бит)
+);
+
+    // ----------------------------------------------------------
+    // Параметры и внутренние сигналы
+    // ----------------------------------------------------------
+    localparam integer TICKS_PER_BIT = CLK_FREQ / BAUD_RATE;  // Тактов на 1 бит
+    localparam integer HALF_BIT_TICKS = TICKS_PER_BIT / 2;    // Тактов до середины бита
+    localparam integer CNT_WIDTH = $clog2(TICKS_PER_BIT);     // Разрядность счётчика
+    
+    // Синхронизация входа (защита от метастабильности)
+    logic rx_sync1, rx_sync2;
+    logic rx_clean;
+    
+    // Счётчики
+    logic [CNT_WIDTH-1:0] bit_timer;      // Счётчик времени бита
+    logic [3:0] bit_counter;              // Счётчик принятых бит (0-10)
+    
+    // Регистры данных
+    logic [9:0] shift_reg;                // Сдвиговый регистр: старт + 8 данных + чётность
+    logic rx_parity_calc;                 // Вычисленная чётность
+    logic rx_parity_received;             // Принятая чётность
+    logic rx_stop_bit;                    // Принятый стоп-бит
+    
+    // Флаги состояний
+    logic receiving;                      // Идёт приём пакета (1 = да)
+    logic sampling_enable;                // Разрешение выборки в середине бита
+    
+    // ----------------------------------------------------------
+    // 1. Синхронизация входного сигнала
+    // ----------------------------------------------------------
+    always_ff @(posedge clk) begin
+        rx_sync1 <= rx_in;        // Первый триггер
+        rx_sync2 <= rx_sync1;     // Второй триггер
+    end
+    
+    assign rx_clean = rx_sync2;   // Синхронизированный сигнал
+    
+    // ----------------------------------------------------------
+    // 2. Обнаружение старт-бита (фронт 1->0)
+    // ----------------------------------------------------------
+    logic rx_prev;
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            rx_prev <= 1'b1;
+        end else begin
+            rx_prev <= rx_clean;
+        end
+    end
+    
+    logic start_detected;
+    assign start_detected = (rx_prev == 1'b1) && (rx_clean == 1'b0);
+    
+    // ----------------------------------------------------------
+    // 3. Таймер битов и счётчик битов
+    // ----------------------------------------------------------
+    always_ff @(posedge clk or posedge reset) begin
+        if (reset) begin
+            bit_timer <= '0;
+            bit_counter <= '0;
+            receiving <= 1'b0;
+            sampling_enable <= 1'b0;
+            shift_reg <= '0;
+            rx_data <= '0;
+            rx_valid <= 1'b0;
+            rx_error <= 1'b0;
+        end else begin
+            // Сброс выходных флагов
+            rx_valid <= 1'b0;
+            rx_error <= 1'b0;
+            
+            // Обнаружение старт-бита (начало приёма)
+            if (start_detected && !receiving) begin
+                receiving <= 1'b1;
+                bit_timer <= '0;
+                bit_counter <= '0;
+                sampling_enable <= 1'b0;
+            end
+            
+            // Если идёт приём пакета
+            if (receiving) begin
+                bit_timer <= bit_timer + 1;
+                
+                // Достигли середины бита (время для выборки)
+                if (bit_timer == HALF_BIT_TICKS - 1) begin
+                    sampling_enable <= 1'b1;
+                end else begin
+                    sampling_enable <= 1'b0;
+                end
+                
+                // Достигли конца бита (переход к следующему)
+                if (bit_timer == TICKS_PER_BIT - 1) begin
+                    bit_timer <= '0;
+                    bit_counter <= bit_counter + 1;
+                    
+                    // Выборка данных в середине бита уже произошла
+                    // Теперь обрабатываем в зависимости от номера бита
+                    
+                    // Проверка стоп-бита (бит №10, если считать с 0)
+                    if (bit_counter == 4'd10) begin
+                        // Проверяем стоп-бит (должен быть 1)
+                        if (rx_stop_bit == 1'b1) begin
+                            // Проверяем чётность
+                            if (rx_parity_calc == rx_parity_received) begin
+                                rx_data <= shift_reg[8:1];  // Извлекаем 8 бит данных
+                                rx_valid <= 1'b1;           // Данные валидны
+                            end else begin
+                                rx_error <= 1'b1;           // Ошибка чётности
+                            end
+                        end else begin
+                            rx_error <= 1'b1;               // Ошибка стоп-бита
+                        end
+                        receiving <= 1'b0;                  // Завершаем приём
+                    end
+                end
+            end
+        end
+    end
+    
+    // ----------------------------------------------------------
+    // 4. Выборка данных в середине каждого бита
+    // ----------------------------------------------------------
+    always_ff @(posedge clk) begin
+        if (sampling_enable && receiving) begin
+            case (bit_counter)
+                4'd0: begin  // Старт-бит (проверяем, что он действительно 0)
+                    if (rx_clean != 1'b0) begin
+                        // Ошибка старт-бита - не начинаем приём
+                        // (в основном блоке сбросится receiving)
+                    end
+                end
+                
+                4'd1: begin  // Бит данных 0 (младший)
+                    shift_reg[0] <= rx_clean;
+                    rx_parity_calc <= rx_clean;  // Начинаем расчёт чётности
+                end
+                
+                4'd2: begin  // Бит данных 1
+                    shift_reg[1] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd3: begin  // Бит данных 2
+                    shift_reg[2] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd4: begin  // Бит данных 3
+                    shift_reg[3] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd5: begin  // Бит данных 4
+                    shift_reg[4] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd6: begin  // Бит данных 5
+                    shift_reg[5] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd7: begin  // Бит данных 6
+                    shift_reg[6] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd8: begin  // Бит данных 7 (старший)
+                    shift_reg[7] <= rx_clean;
+                    rx_parity_calc <= rx_parity_calc ^ rx_clean;
+                end
+                
+                4'd9: begin  // Бит чётности
+                    shift_reg[8] <= rx_clean;
+                    rx_parity_received <= rx_clean;
+                end
+                
+                4'd10: begin // Стоп-бит
+                    rx_stop_bit <= rx_clean;
+                end
+                
+                default: begin
+                    // Ничего не делаем
+                end
+            endcase
+        end
+    end
+
+endmodule
